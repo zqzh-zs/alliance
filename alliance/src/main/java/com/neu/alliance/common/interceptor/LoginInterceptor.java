@@ -14,12 +14,24 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String uri = request.getRequestURI();
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return true;
         }
 
+        // ✅ 放行静态资源路径
+        if (uri.startsWith("/static/")) {
+            return true;
+        }
+
+        // ✅ 放行接口：课程图片上传、视频上传、添加课程
+        if (uri.contains("/course/uploadImage") ||
+                uri.contains("/course/uploadVideo") ||
+                uri.contains("/addcourse")) {
+            return true;
+        }
 
         try {
             // 1. 获取 Authorization 头部的 token，格式为 "Bearer xxx.xxx.xxx"
@@ -62,5 +74,8 @@ public class LoginInterceptor implements HandlerInterceptor {
             response.setStatus(401);
             return false;
         }
+
     }
+
+
 }

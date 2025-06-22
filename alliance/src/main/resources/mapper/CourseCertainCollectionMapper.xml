@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neu.alliance.mapper.CourseCertainCollectionMapper">
+
+    <select id="selectCollectionById" parameterType="long" resultType="com.neu.alliance.entity.CourseCollection">
+        SELECT * FROM course_collection WHERE id = #{collectionId}
+    </select>
+
+    <select id="selectPassedCoursesByCollectionId" parameterType="long" resultType="com.neu.alliance.entity.Course">
+        SELECT c.*
+        FROM course_collection_relation ccr
+                 JOIN course c ON ccr.course_id = c.id
+        WHERE ccr.collection_id = #{collectionId} AND c.status = 1
+        ORDER BY ccr.sort_order ASC, c.id ASC
+    </select>
+
+    <update id="updateCourseSortOrder">
+        UPDATE course_collection_relation
+        SET sort_order = #{sortOrder}
+        WHERE collection_id = #{collectionId} AND course_id = #{courseId}
+    </update>
+</mapper>

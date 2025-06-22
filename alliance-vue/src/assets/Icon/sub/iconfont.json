@@ -1,0 +1,16 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11372671",
+      "name": "减少",
+      "font_class": "jianshao",
+      "unicode": "e8b1",
+      "unicode_decimal": 59569
+    }
+  ]
+}

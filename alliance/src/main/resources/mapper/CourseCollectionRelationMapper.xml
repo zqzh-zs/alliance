@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neu.alliance.mapper.CourseCollectionRelationMapper">
+
+    <delete id="deleteByCollectionId">
+        DELETE FROM course_collection_relation WHERE collection_id = #{collectionId}
+    </delete>
+
+<!--    <insert id="insertRelation">-->
+<!--        INSERT INTO course_collection_relation (collection_id, course_id, sort_order)-->
+<!--        VALUES (#{collectionId}, #{courseId}, #{sortOrder})-->
+<!--    </insert>-->
+
+    <insert id="insertRelation" parameterType="com.neu.alliance.entity.CourseCollectionRelation">
+        INSERT INTO course_collection_relation (collection_id, course_id, sort_order)
+        VALUES (#{collection_id}, #{course_id}, #{sort_order})
+    </insert>
+
+    <select id="selectCourseIdsByCollectionId" resultType="long">
+        SELECT course_id FROM course_collection_relation
+        WHERE collection_id = #{collectionId}
+    </select>
+
+    <delete id="deleteByCollectionAndCourse">
+        DELETE FROM course_collection_relation
+        WHERE collection_id = #{collectionId} AND course_id = #{courseId}
+    </delete>
+</mapper>
