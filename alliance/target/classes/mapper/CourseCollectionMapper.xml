@@ -18,12 +18,34 @@
         SELECT * FROM course_collection ORDER BY update_time DESC
     </select>
 
-    <!-- CourseCollectionMapper.xml -->
+    <!--查合集名称（课程详情页用））-->
     <select id="findNamesByCourseId" resultType="String">
         SELECT cc.collection_name
         FROM course_collection_relation ccr
                  JOIN course_collection cc ON ccr.collection_id = cc.id
         WHERE ccr.course_id = #{courseId}
     </select>
+
+    <!-- 更新合集 -->
+    <update id="updateCollection" parameterType="com.neu.alliance.entity.CourseCollection">
+        UPDATE course_collection
+        SET collection_name = #{collection_name},
+            description = #{description},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除合集（连带删除关联表记录） -->
+    <!-- 删除合集关联关系 -->
+    <delete id="deleteCollectionRelations" parameterType="int">
+        DELETE FROM course_collection_relation WHERE collection_id = #{id}
+    </delete>
+
+    <!-- 删除合集本体 -->
+    <delete id="deleteCollection" parameterType="int">
+        DELETE FROM course_collection WHERE id = #{id}
+    </delete>
+
+
 
 </mapper>

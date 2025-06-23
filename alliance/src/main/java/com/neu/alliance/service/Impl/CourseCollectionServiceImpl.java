@@ -24,4 +24,15 @@ public class CourseCollectionServiceImpl implements CourseCollectionService {
         return collectionMapper.selectAll();
     }
 
+    @Override
+    public int updateCourseCollection(CourseCollection collection) {
+        return collectionMapper.updateCollection(collection);
+    }
+
+    @Override
+    public int deleteCourseCollection(Integer id) {
+        // 先删关联关系，再删合集
+        collectionMapper.deleteCollectionRelations(id);
+        return collectionMapper.deleteCollection(id);
+    }
 }

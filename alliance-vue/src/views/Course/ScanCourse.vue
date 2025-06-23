@@ -1,14 +1,12 @@
 <template>
   <div class="page-container">
     <CourseCollectionDetail />
-    <!-- <CourseCertainCollection/> -->
     <router-view></router-view>
   </div>
 </template>
 
 <script setup lang="ts">
 import CourseCollectionDetail from '../../components/Course/CourseCollectionDetail.vue'
-// import CourseCertainCollection from "../../components/Course/CourseCertainCollection.vue"
 </script>
 
 <style scoped>

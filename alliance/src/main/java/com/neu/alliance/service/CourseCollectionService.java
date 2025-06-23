@@ -9,4 +9,9 @@ public interface CourseCollectionService {
 
     List<CourseCollection> getAllCollections();
 
+    int updateCourseCollection(CourseCollection collection);
+
+
+    int deleteCourseCollection(Integer id);
+
 }

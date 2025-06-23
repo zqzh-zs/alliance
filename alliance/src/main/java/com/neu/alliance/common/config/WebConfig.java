@@ -29,13 +29,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("${upload.static-path}")
     private String staticPathPrefix;
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(loginInterceptor)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/auth/company/register","/auth/login",
-//            "/auth/checkCode","/files/download/**", "/files/upload","/course/**","/addcourse");
-//}
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(loginInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/auth/company/register","/auth/login",
+            "/auth/checkCode","/files/download/**", "/files/upload");
+}
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         WebMvcConfigurer.super.addResourceHandlers(registry);

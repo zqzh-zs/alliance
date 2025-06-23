@@ -12,4 +12,10 @@ public interface CourseCollectionMapper {
     List<CourseCollection> selectAll();
     // CourseCollectionMapper.java
     List<String> findNamesByCourseId(Long courseId);
+
+    int updateCollection(CourseCollection collection);
+
+    int deleteCollection(Integer id);
+
+    int deleteCollectionRelations(Integer id);
 }

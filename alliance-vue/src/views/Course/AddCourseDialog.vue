@@ -1,7 +1,8 @@
 <!-- AddCourseDialog.vue -->
 <script setup lang="ts">
+import request from '@/utils/request'
 import { ref, defineExpose, onMounted } from 'vue'
-import axios from 'axios'
+// import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 // 定义事件
@@ -85,93 +86,92 @@ function handleCoverChange(e: Event) {
   }
 }
 
-// 获取全部合集
+
+// 获取合集列表
 async function loadCollections() {
-  const res = await axios.get('http://localhost:8080/course-collection/listAll');
-  console.log('合集接口返回:', res.data);
-
-  // 这里取两层 data，最里面的是合集数组
-  const list = res.data?.data?.data;
-
-  if (Array.isArray(list)) {
-    collectionOptions.value = list.map((c: any) => ({
-      label: c.collection_name,
-      value: c.id
-    }));
-	console.log("选项为：",collectionOptions.value)
-  } else {
-    collectionOptions.value = [];
-    console.warn('合集数据格式异常，未获取到合集列表');
-  }
-}
-
-
-async function handleSave() {
-  const formData = new FormData();
-
-  formData.append("id", id.value);
-  formData.append("course_name", course_name.value);
-  formData.append("introduction", introduction.value);
-  formData.append("sort_order", sort_order.value);
-  formData.append("author", author.value);
-
-  if (!coursecoverFile.value || !coursevideoFile.value) {
-    ElMessage.warning('请上传课程封面和视频');
-    return;
-  }
-
-  formData.append("coverImage", coursecoverFile.value);
-  formData.append("videoFile", coursevideoFile.value);
-
-  // // ✅ 添加合集 ID 到 formData（后端期望的是 collectionIds: List<Long>）
-  // if (selectedCollectionIds.value && selectedCollectionIds.value.length > 0) {
-  //   selectedCollectionIds.value.forEach(id => {
-  //     formData.append("collectionIds", id.toString());
-  //   });
-  // }
-  
-  // 将合集 ID 列表追加到 FormData
-  selectedCollectionIds.value.forEach(cid => formData.append('collectionIds', cid.toString()))
-  
   try {
-	  // 1. 提交课程数据
-    const res = await axios.post('http://localhost:8080/addcourse', formData);
-    console.log('响应数据', res.data);
-
-    if (res.data.code == 200 || res.data.code === '200') {
-      ElMessage.success(res.data.msg || '添加成功');
-	  
-      // 2. 如果选择了合集，则分配课程到合集
-      const courseId = res.data.data; // 假设后端返回新课程的ID（建议后端 addcourse 返回 courseId）
-	if (selectedCollectionId.value && courseId) {
-		console.log('新增课程ID:', courseId);
-
-	  await axios.post(
-	    'http://localhost:8080/course-collection-relation/assign',
-		          {
-		            // collectionId: selectedCollectionId.value,
-		            // courseIds: [courseId]
-					      collectionId: Number(selectedCollectionId.value), // 👈 显式转换为数字
-					      courseIds: [Number(courseId)] // 👈 防止后端因类型不匹配出错
-		          }
-		
-	  );
-	  console.log('collectionId:', selectedCollectionId.value, typeof selectedCollectionId.value);
-	  console.log('courseId:', courseId, typeof courseId);
-	  console.log('课程成功分配到合集');
-	}
-
-      resetForm();
-      visible.value = false;
-      emit('added');
+    const res = await request.get('http://localhost:8080/course-collection/listAll')
+    // const list = res.data?.data?.data
+	console.log("合集接口响应：", res)
+	const list = res.data?.data
+	console.log("合集有：",list)
+    if (Array.isArray(list)) {
+      collectionOptions.value = list.map((c: any) => ({
+        label: c.collection_name,
+        value: c.id
+      }))
     } else {
-      ElMessage.error(res.data.msg || '添加失败');
+      collectionOptions.value = []
+      console.warn('合集数据格式异常')
     }
   } catch (error) {
-    console.error('请求失败:', error);
-    ElMessage.error('请求出错');
+    console.error('加载合集失败:', error)
+    ElMessage.error('加载合集失败')
   }
 }
+
+// 保存课程
+async function handleSave() {
+  const formData = new FormData()
+
+  formData.append('id', id.value)
+  formData.append('course_name', course_name.value)
+  formData.append('introduction', introduction.value)
+  formData.append('sort_order', sort_order.value)
+  formData.append('author', author.value)
+
+  if (!coursecoverFile.value || !coursevideoFile.value) {
+    ElMessage.warning('请上传课程封面和视频')
+    return
+  }
+
+  formData.append('coverImage', coursecoverFile.value)
+  formData.append('videoFile', coursevideoFile.value)
+
+  selectedCollectionIds.value.forEach(cid =>
+    formData.append('collectionIds', cid.toString())
+  )
+
+  try {
+    const res = await request.request({
+      method: 'POST',
+      url: 'http://localhost:8080/addcourse',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    const courseId = res.data?.data
+
+    if (res.data.code === 200 || res.data.code === '200') {
+      ElMessage.success(res.data.msg || '添加成功')
+
+      // 课程成功后，发送合集分配请求（可选）
+      if (selectedCollectionId.value && courseId) {
+        await request.post(
+          'http://localhost:8080/course-collection-relation/assign',
+          {
+            collectionId: Number(selectedCollectionId.value),
+            courseIds: [Number(courseId)]
+          }
+        )
+        console.log('课程成功分配到合集')
+      }
+
+      resetForm()
+      visible.value = false
+      emit('added')
+    } else {
+      ElMessage.error(res.data.msg || '添加失败')
+    }
+  } catch (error) {
+    console.error('请求失败:', error)
+    ElMessage.error('请求出错')
+  }
+}
+
+
 
 onMounted(() => {
   loadCollections()
@@ -186,7 +186,7 @@ onMounted(() => {
         <div class="preview-box2">
           <h4>封面预览</h4>
           <div class="image-preview">
-            <img :src="coursecoverUrl || cover_image || 'https://via.placeholder.com/200x150?text=暂无图片'" alt="封面预览" width="250"/>
+            <img :src="coursecoverUrl || cover_image || '/no-image2.png'" alt="封面预览" width="250"/>
           </div>
         </div>
 		

@@ -71,5 +71,35 @@ public class CourseCollectionController {
         }
     }
 
+
+    @PutMapping
+    public Result updateCourseCollection(@RequestBody CourseCollection collection) {
+        try {
+            collection.setUpdate_time(LocalDateTime.now());
+            int result = collectionService.updateCourseCollection(collection);
+            if (result > 0) {
+                return Result.success("合集更新成功");
+            } else {
+                return Result.error("未找到该合集或更新失败");
+            }
+        } catch (Exception e) {
+            return Result.error("更新失败：" + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public Result deleteCourseCollection(@PathVariable Integer id) {
+        try {
+            int result = collectionService.deleteCourseCollection(id);
+            if (result > 0) {
+                return Result.success("合集删除成功");
+            } else {
+                return Result.error("删除失败，可能是ID不存在");
+            }
+        } catch (Exception e) {
+            return Result.error("删除失败：" + e.getMessage());
+        }
+    }
+
     // 后续可以在这里加：分页查询合集、删除合集、更新合集、获取合集下的课程等功能
 }

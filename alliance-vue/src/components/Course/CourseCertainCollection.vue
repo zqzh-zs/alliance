@@ -1,9 +1,12 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import axios from 'axios'
-import { useRoute } from 'vue-router'
+import request from '@/utils/request'
+import { useRoute, useRouter } from 'vue-router'  
 import dayjs from 'dayjs'
 
+
+const router = useRouter()  
 const route = useRoute()
 const collectionId = Number(route.params.id)
 
@@ -27,11 +30,12 @@ const formatDate = (date) => {
   return date ? dayjs(date).format('YYYY-MM-DD') : '未知'
 }
 
+
 async function fetchCollectionDetail() {
   try {
-    const res = await axios.get(`http://localhost:8080/course-certain-collection/${collectionId}/detail`)
-    if (res.data.code === 200) {
-      const data = res.data.data.data
+    const res = await request.get(`/course-certain-collection/${collectionId}/detail`)
+    if (res.code === 200) {
+      const data = res.data.data
       if (data.collection) {
         Object.assign(collection, data.collection)
       }
@@ -43,7 +47,7 @@ async function fetchCollectionDetail() {
         console.warn("⚠️ 未返回课程列表或格式错误", data.coursesPage)
       }
     } else {
-      console.error('❌ 获取合集详情失败: ', res.data.msg || res.data.errMsg)
+      console.error('❌ 获取合集详情失败: ', res.msg || res.errMsg)
     }
   } catch (error) {
     console.error('🚨 请求合集详情异常: ', error)
@@ -68,13 +72,17 @@ function playVideo(url) {
 
 async function changeSortOrder(course) {
   try {
-    await axios.put(`http://localhost:8080/course-certain-collection/${collectionId}/course/${course.id}/sortOrder`, null, {
+    await request.put(`/course-certain-collection/${collectionId}/course/${course.id}/sortOrder`, null, {
       params: { sortOrder: course.sort_order }
     })
     await fetchCollectionDetail()
   } catch (error) {
     console.error('排序更新失败', error)
   }
+}
+
+function exitToScanCourse() {
+  router.push('/scancourse')
 }
 
 onMounted(() => {
@@ -85,6 +93,10 @@ onMounted(() => {
 <template>
   <div class="collection-detail">
     <!-- 🌟 合集信息卡片 -->
+	<div style="margin-bottom: 10px;">
+	  <el-button type="info" size="small" @click="exitToScanCourse">返回</el-button>
+	</div>
+	
 	
     <el-card shadow="always" class="collection-card">
 	<h1 class="collection-title">{{ collection.collection_name }}</h1>
