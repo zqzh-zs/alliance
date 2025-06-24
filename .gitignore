@@ -9,3 +9,6 @@ alliance/target/
 *.iml
 node_modules/
 target/
+.DS_Store
+.idea/
+
