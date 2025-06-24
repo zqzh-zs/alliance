@@ -59,8 +59,14 @@ export default defineConfig({
       '/auth': {
         target: 'http://localhost:8080', // Spring Boot 后端端口
         changeOrigin: true
+      },
+      '/news': {
+        target: 'http://localhost:8080', // ✅ 代理 news 相关接口到后端
+        changeOrigin: true
       }
     }
   }
+
+
 
 })

@@ -13,6 +13,17 @@ const router = createRouter({
         { path: 'admin', name: 'Admin', component: () => import('@/views/manager/Admin.vue')},
         { path: 'userInfo', name: 'UserInfo', component: () => import('@/views/manager/UserInfo.vue')},
         { path: 'userList', name: 'UserList', component: () => import('@/views/manager/UserList.vue')},
+        {
+          path: '/news',
+          name: 'News',
+          component: () => import('@/views/manager/News.vue'),  // 父级容器页（需创建 News.vue）
+          redirect: '/news/all',
+          children: [
+            { path: 'all', name: 'NewsAll', component: () => import('@/views/manager/news/NewsAll.vue') },
+            { path: 'mine', name: 'NewsMine', component: () => import('@/views/manager/news/NewsMine.vue') },
+            { path: 'detail/:id', name: 'NewsDetail', component: () => import('@/views/manager/news/NewsDetail.vue') }
+          ]
+        },
       ]
     },
     {

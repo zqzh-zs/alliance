@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neu.alliance.mapper.NewsInfoMapper">
+
+    <insert id="insert" parameterType="com.neu.alliance.entity.NewsInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO news_info
+        (title, news_image, content, summary, author, status, reject_reason,
+         create_time, update_time, deleted, create_user_id, is_top, view_count)
+        VALUES
+            (#{title}, #{newsImage}, #{content}, #{summary}, #{author}, #{status}, #{rejectReason},
+             NOW(), NOW(), #{deleted}, #{createUserId}, #{isTop}, #{viewCount})
+    </insert>
+
+<!--    <update id="update" parameterType="com.neu.alliance.entity.NewsInfo">-->
+<!--        UPDATE news_info-->
+<!--        SET-->
+<!--            title = #{title},-->
+<!--            news_image = #{newsImage},-->
+<!--            content = #{content},-->
+<!--            summary = #{summary},-->
+<!--            author = #{author},-->
+<!--            status = #{status},-->
+<!--            reject_reason = #{rejectReason},-->
+<!--            update_time = NOW(),-->
+<!--            deleted = #{deleted},-->
+<!--            is_top = #{isTop},-->
+<!--            view_count = #{viewCount}-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
+
+    <update id="update" parameterType="com.neu.alliance.entity.NewsInfo">
+        UPDATE news_info
+
+            <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="newsImage != null">news_image = #{newsImage},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="rejectReason != null">reject_reason = #{rejectReason},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="isTop != null">is_top = #{isTop},</if>
+            <if test="viewCount != null">view_count = #{viewCount},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateWithoutTime" parameterType="com.neu.alliance.entity.NewsInfo">
+        UPDATE news_info
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="newsImage != null">news_image = #{newsImage},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="rejectReason != null">reject_reason = #{rejectReason},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="isTop != null">is_top = #{isTop},</if>
+            <if test="viewCount != null">view_count = #{viewCount},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM news_info WHERE id = #{id}
+    </delete>
+
+    <select id="selectById" parameterType="long" resultType="com.neu.alliance.entity.NewsInfo">
+        SELECT * FROM news_info WHERE id = #{id} AND deleted = 0
+    </select>
+
+    <select id="selectByQuery" parameterType="com.neu.alliance.dto.NewsQueryDTO" resultType="com.neu.alliance.entity.NewsInfo">
+        SELECT * FROM news_info
+        WHERE deleted = 0
+        <if test="startTime != null">
+            AND create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND create_time &lt;= #{endTime}
+        </if>
+        <if test="title != null and title != ''">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="summary != null and summary != ''">
+            AND summary LIKE CONCAT('%', #{summary}, '%')
+        </if>
+        <if test="newsImage != null and newsImage != ''">
+            AND news_image LIKE CONCAT('%', #{newsImage}, '%')
+        </if>
+        <if test="author != null and author != ''">
+            AND author LIKE CONCAT('%', #{author}, '%')
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="createUserId != null">
+            AND create_user_id = #{createUserId}
+        </if>
+        ORDER BY is_top DESC,create_time DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countByQuery" parameterType="com.neu.alliance.dto.NewsQueryDTO" resultType="int">
+        SELECT COUNT(*) FROM news_info
+        WHERE deleted = 0
+        <if test="startTime != null">
+            AND create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND create_time &lt;= #{endTime}
+        </if>
+        <if test="title != null and title != ''">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="summary != null and summary != ''">
+            AND summary LIKE CONCAT('%', #{summary}, '%')
+        </if>
+        <if test="newsImage != null and newsImage != ''">
+            AND news_image LIKE CONCAT('%', #{newsImage}, '%')
+        </if>
+        <if test="author != null and author != ''">
+            AND author LIKE CONCAT('%', #{author}, '%')
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="createUserId != null">
+            AND create_user_id = #{createUserId}
+        </if>
+    </select>
+
+    <update id="auditNews" parameterType="map">
+        UPDATE news_info
+        SET status = #{status}, reject_reason = #{reason}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateViewCount" parameterType="map">
+        UPDATE news_info
+        SET view_count = #{viewCount}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

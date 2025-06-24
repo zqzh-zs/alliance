@@ -1,6 +1,7 @@
 package com.neu.alliance.common.interceptor;
 
 import com.neu.alliance.common.utils.JWTUtils;
+import com.neu.alliance.entity.User; // ✅ 添加 import
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +20,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             response.setStatus(HttpServletResponse.SC_OK);
             return true;
         }
-
 
         try {
             // 1. 获取 Authorization 头部的 token，格式为 "Bearer xxx.xxx.xxx"
@@ -52,8 +52,14 @@ public class LoginInterceptor implements HandlerInterceptor {
                 }
             }
 
-            // 4. 将解析后的用户信息存入 request，供后续使用
-            request.setAttribute("claims", claims);
+            // 4. ✅ 将用户信息存入 request 属性，供 @RequestAttribute("user") 使用
+            User user = new User();
+            user.setId((int) ((Number) claims.get("id")).longValue());
+            user.setNickname((String) claims.get("nickname"));
+            user.setRole((Integer) claims.get("role")); // 确保 JWT 里有 role 字段
+            user.setUsername((String) claims.get("username"));
+            request.setAttribute("user", user);          // ✅ 供 @RequestAttribute("user") 注入使用
+            request.setAttribute("claims", claims);      // （可选）供其他用途使用
 
             return true;
 

@@ -28,26 +28,25 @@ public class JWTUtils {
     }
 
     public static Claims parseJWT(String token){
-        if(!StringUtils.hasLength(token)){
+        if (!StringUtils.hasText(token) || token.split("\\.").length != 3) {
+            log.error("token 格式错误, token: {}", token);
             return null;
         }
 
         JwtParser builder = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build();
-        Claims claims = null;
-        try{
-            claims = builder.parseClaimsJws(token).getBody();
-        }catch(ExpiredJwtException e){
-            log.error("token已过期, token:{}",token);
-        }catch (SignatureException e){
-            log.error("token签名错误, token:{}",token);
+
+        try {
+            return builder.parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            log.error("token已过期, token: {}", token);
+        } catch (SignatureException e) {
+            log.error("token签名错误, token: {}", token);
         } catch (Exception e) {
-            log.error("token解析失败, token:{}, 原因: {}", token, e.getMessage());
-            e.printStackTrace();
-            return null;
+            log.error("token解析失败, token: {}, 原因: {}", token, e.getMessage());
         }
-        return claims;
+        return null;
     }
 
     public static Integer getUserIdFromToken(String jwtToken) {
@@ -69,7 +68,10 @@ public class JWTUtils {
 
     public static Integer getUserId(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
+        log.debug("Authorization header: {}", authHeader);
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            log.warn("请求未携带有效的 Authorization 头");
             return null;
         }
         String token = authHeader.substring(7);  // 去掉 "Bearer " 前缀
