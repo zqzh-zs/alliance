@@ -25,6 +25,22 @@
             <el-icon><HomeFilled /></el-icon>
             <span>系统首页</span>
           </el-menu-item>
+<<<<<<< HEAD
+          <el-sub-menu index="3">
+            <template #title>
+              <el-icon><Document /></el-icon>
+              <span>行业动态</span>
+            </template>
+            <el-menu-item index="/news/all">
+              <el-icon><View /></el-icon>
+              <span>全部动态</span>
+            </el-menu-item>
+            <el-menu-item index="/news/mine">
+              <el-icon><Edit /></el-icon>
+              <span>我的动态</span>
+            </el-menu-item>
+          </el-sub-menu>
+=======
 		  <el-sub-menu index="2">
 		    <template #title>
 		  		<span class="iconfont"> &#xe614; &nbsp;</span>
@@ -39,6 +55,7 @@
 		  		<span>课程编辑</span>
 		  	</el-menu-item>
 		  </el-sub-menu>
+>>>>>>> main
           <el-sub-menu index="2" v-if="data.user.role === 1">
             <template #title>
               <el-icon><User /></el-icon>
@@ -53,7 +70,7 @@
             <el-icon><User /></el-icon>
             <span>个人资料</span>
           </el-menu-item>
-          <el-menu-item index="login" @click="logout">
+          <el-menu-item index="logout" @click="logout">
             <el-icon><SwitchButton /></el-icon>
             <span>退出系统</span>
           </el-menu-item>
@@ -80,8 +97,12 @@ const data = reactive({
 })
 
 
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
 const logout = () => {
   localStorage.removeItem('alliance-user')
+  router.push('/login') // ✅ 使用绝对路径跳转到 /login
 }
 
 const updateUser = () => {

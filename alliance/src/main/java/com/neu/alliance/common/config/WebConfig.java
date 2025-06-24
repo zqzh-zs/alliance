@@ -15,12 +15,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
+<<<<<<< HEAD
+=======
     @Value("${upload.image-path}")
     private String imagePath;
 
@@ -29,10 +30,27 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("${upload.static-path}")
     private String staticPathPrefix;
+>>>>>>> main
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
+<<<<<<< HEAD
+                .excludePathPatterns(
+                        "/auth/company/register",
+                        "/auth/login",
+                        "/auth/checkCode",
+                        "/files/**",       // 放行所有 /files 下的请求，包括静态资源
+                        "/news/upload/**"
+                );
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 静态资源映射
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations("file:/Users/zqz/local/alliance/uploads/");
+=======
                 .excludePathPatterns("/auth/company/register","/auth/login",
             "/auth/checkCode","/files/download/**", "/files/upload");
 }
@@ -66,7 +84,6 @@ public class WebConfig implements WebMvcConfigurer {
         // 设置总请求最大大小
         factory.setMaxRequestSize(DataSize.ofMegabytes(100));
         return factory.createMultipartConfig();
+>>>>>>> main
     }
-
 }
-

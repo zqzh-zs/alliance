@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/alliance?characterEncoding=utf-8&&userSSL=false
     username: root
-    password: 1234
+    password: FredWeasley
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     static-path-pattern: /**   # 允许访问 static 映射
