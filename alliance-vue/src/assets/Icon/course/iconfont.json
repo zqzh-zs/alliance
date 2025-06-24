@@ -1,0 +1,16 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "9851612",
+      "name": "我的课程",
+      "font_class": "wodekecheng",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    }
+  ]
+}

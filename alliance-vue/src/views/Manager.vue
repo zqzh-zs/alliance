@@ -25,6 +25,7 @@
             <el-icon><HomeFilled /></el-icon>
             <span>系统首页</span>
           </el-menu-item>
+<<<<<<< HEAD
           <el-sub-menu index="3">
             <template #title>
               <el-icon><Document /></el-icon>
@@ -39,6 +40,22 @@
               <span>我的动态</span>
             </el-menu-item>
           </el-sub-menu>
+=======
+		  <el-sub-menu index="2">
+		    <template #title>
+		  		<span class="iconfont"> &#xe614; &nbsp;</span>
+		        <span>课程管理</span>
+		    </template>
+		    <el-menu-item index="/scancourse">
+		  		<span class="iconfont"> &#xe61d; </span>
+		  		<span>课程浏览</span>
+		    </el-menu-item>
+		  	<el-menu-item index="/editcourse">
+		  		<el-icon><Edit /></el-icon>
+		  		<span>课程编辑</span>
+		  	</el-menu-item>
+		  </el-sub-menu>
+>>>>>>> main
           <el-sub-menu index="2" v-if="data.user.role === 1">
             <template #title>
               <el-icon><User /></el-icon>

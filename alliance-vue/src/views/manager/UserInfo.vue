@@ -84,7 +84,7 @@ const data = reactive({
     confirmPassword: ""
   }
 })
-
+const emit = defineEmits(['updateUser'])  // <--- 添加这行
 // 接口前缀：根据角色动态决定
 const prefix = data.user.role === 1 ? "/admin" : "/user"
 
@@ -103,6 +103,8 @@ request.get(`${prefix}/info`, {
 // 上传头像成功后设置头像 URL
 const handleFileUpload = (file) => {
   data.user.avatar = file.data
+  localStorage.setItem("alliance-user", JSON.stringify(data.user))
+  emit("updateUser")   // <--- 通知父组件刷新头像
 }
 
 // 保存基本资料
