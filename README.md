@@ -194,6 +194,37 @@ CREATE TABLE `course_collection_relation` (
                                               CONSTRAINT `fk_collection_id` FOREIGN KEY (`collection_id`) REFERENCES `course_collection` (`id`) ON DELETE CASCADE,
                                               CONSTRAINT `fk_course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建行业动态表
+CREATE TABLE `news_info` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '新闻主键ID',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `news_image` varchar(500) DEFAULT NULL COMMENT '新闻图片',
+  `content` text COMMENT '内容',
+  `summary` text COMMENT '摘要',
+  `author` varchar(100) DEFAULT NULL COMMENT '作者',
+  `status` int DEFAULT '0',
+  `reject_reason` varchar(255) DEFAULT NULL COMMENT '驳回原因',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted` int DEFAULT '0',
+  `create_user_id` int DEFAULT NULL COMMENT '创建者ID',
+  `is_top` tinyint DEFAULT '0' COMMENT '是否置顶（0-否，1-是）',
+  `view_count` int DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='新闻信息表';
+
+-- 创建动态附件表
+CREATE TABLE `news_attachment` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '附件主键ID',
+  `news_id` bigint NOT NULL COMMENT '所属新闻ID',
+  `file_name` varchar(255) NOT NULL COMMENT '文件名',
+  `file_url` varchar(500) NOT NULL COMMENT '文件URL',
+  `upload_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '上传时间',
+  PRIMARY KEY (`id`),
+  KEY `news_id` (`news_id`),
+  CONSTRAINT `news_attachment_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news_info` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='新闻附件表';
 ```
 ### 3.Springboot的application.yml配置
 ``` yml
