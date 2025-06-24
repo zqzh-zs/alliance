@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @RestController
@@ -73,6 +75,14 @@ public class NewsController {
             query.setCreateUserId(user.getId());
         }
 
+        // 设置 endTime 为当天 23:59:59.999
+        if (query.getEndTime() != null) {
+            LocalDateTime endTime = query.getEndTime();
+            query.setEndTime(endTime.withHour(23).withMinute(59).withSecond(59).withNano(999_000_000));
+            System.out.println("StartTime: " + query.getStartTime());
+            System.out.println("EndTime (corrected): " + query.getEndTime());
+        }
+
         List<NewsInfo> list = newsInfoService.listByQuery(query);
         int total = newsInfoService.countByQuery(query);
 
@@ -106,7 +116,7 @@ public class NewsController {
             return res;
         }
 
-        String uploadDir = "/Users/zqz/local/alliance/uploads/";
+        String uploadDir = "/Users/zqz/local/alliance/uploads/";//保存文件地址
         File dir = new File(uploadDir);
         if (!dir.exists()) dir.mkdirs();
 

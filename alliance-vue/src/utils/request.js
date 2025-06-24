@@ -10,56 +10,42 @@ const request = axios.create({
 
 // 请求拦截器 - 自动带 token
 request.interceptors.request.use(config => {
-<<<<<<< HEAD
-    if (!config.headers['Content-Type']) {
+    // 判断是否为 FormData
+    const isFormData = config.data instanceof FormData;
+
+    // 设置默认 Content-Type
+    if (!isFormData && !config.headers['Content-Type']) {
         config.headers['Content-Type'] = 'application/json;charset=utf-8';
     }
+
+    // 设置 token
     const userStr = localStorage.getItem("alliance-user");
     if (userStr) {
-        const user = JSON.parse(userStr);
-        if (user?.token) {
-            config.headers['Authorization'] = 'Bearer ' + user.token;
+        try {
+            const user = JSON.parse(userStr);
+            if (user?.token) {
+                config.headers['Authorization'] = 'Bearer ' + user.token;
+            } else {
+                console.warn("⚠️ 没有找到 token");
+            }
+        } catch (e) {
+            console.warn("⚠️ 用户信息解析失败", e);
         }
+    } else {
+        console.warn("⚠️ localStorage 中没有登录信息");
     }
+
     return config;
-=======
-  // 判断是否为 FormData
-  const isFormData = config.data instanceof FormData;
-
-  // 设置默认 Content-Type（非 FormData 且未显式指定）
-  if (!isFormData && !config.headers['Content-Type']) {
-    config.headers['Content-Type'] = 'application/json;charset=utf-8';
-  }
-
-  // 从 localStorage 中获取用户 token，添加 Authorization 头
-  const userStr = localStorage.getItem("alliance-user");
-  if (userStr) {
-    try {
-      const user = JSON.parse(userStr);
-      if (user?.token) {
-        config.headers['Authorization'] = 'Bearer ' + user.token;
-      } else {
-        console.warn("⚠️ 没有找到 token");
-      }
-    } catch (e) {
-      console.warn("⚠️ 用户信息解析失败", e);
-    }
-  } else {
-    console.warn("⚠️ localStorage 中没有登录信息");
-  }
-
-  return config;
->>>>>>> main
 }, error => {
-  return Promise.reject(error);
+    return Promise.reject(error);
 });
 
-<<<<<<< HEAD
+
 // 响应拦截器 - 统一处理状态码
-=======
+
 
 // 响应拦截器 - 统一处理响应
->>>>>>> main
+
 request.interceptors.response.use(
     response => {
         let res = response.data;

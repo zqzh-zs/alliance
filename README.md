@@ -45,8 +45,20 @@
 - **个人信息：** 可以对用户的基本资料，用户昵称，手机号码，邮箱，性别等进行修改；输入旧密码，新密码和确认密码进行密码修改；可以查看用户的基本信息，创建日期等信息
 - **用户管理：** 超级管理员可以查看所有用户列表，列表支持通过用户名称，手机号码，状态等进行模糊查询；超级管理员可以创建和修改用户信息，包括用户名称，用户状态，用
   户信息等。超级管理员根据用户的权限，控制企业用户对系统的访问和操作。
-2. Web 端行业动态管理子系统（待上线）
-3. Web 端课程管理子系统（已上线）
+2. Web 端行业动态管理子系统（已上线）
+
+- **发布动态：** 企业用户和超级管理员可发布新的行业动态，填写标题、封面图片、摘要、内容、作者、附件等信息。发布后可进行封面图和附件上传。
+- **浏览动态：** 用户可以分页浏览已发布的行业动态列表，支持按标题、作者、摘要、状态（待审核/已通过/已驳回）进行模糊查询和组合筛选。
+- **动态详情：** 点击动态标题可进入详情页，查看完整内容，包括发布时间、作者、附件等信息。
+- **编辑动态：** 支持对已发布动态进行修改，包括标题、内容、摘要、封面、附件等信息。编辑后的动态重新进入待审核状态。
+- **删除动态：** 企业用户可删除自己发布的动态，超级管理员可以删除所有不需要的动态。删除操作前提供确认弹窗以避免误删。
+- **审核功能：** 企业用户发布的动态需由超级管理员审核，审核操作包括“通过”或“驳回”，驳回时需填写驳回原因。审核后动态状态将变更为“已通过”或“已驳回”。
+- **权限分配：**
+  - 超级管理员：可查看和管理所有企业用户发布的动态，具备发布、编辑、删除、审核等权限。
+  - 企业用户：仅可查看和管理自己发布的动态，包括发布、编辑、删除等操作，无法审核他人动态。
+
+2. Web 端课程管理子系统（已上线）
+
 - **课程浏览：** 可查看各个课程合集，并能查看各个课程合集的介绍信息、合集中的各个课程视频信息并播放课程视频
 - **课程编辑：** 可对课程进行增删改查,可以上传课程视频、课程封面等课程信息，可进行删除、修改课程信息。如果是管理员，还可以“通过”或“驳回”课程申请。
 4. Web 端会议管理子系统（待上线）
@@ -182,6 +194,37 @@ CREATE TABLE `course_collection_relation` (
                                               CONSTRAINT `fk_collection_id` FOREIGN KEY (`collection_id`) REFERENCES `course_collection` (`id`) ON DELETE CASCADE,
                                               CONSTRAINT `fk_course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建行业动态表
+CREATE TABLE `news_info` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '新闻主键ID',
+  `title` varchar(255) NOT NULL COMMENT '标题',
+  `news_image` varchar(500) DEFAULT NULL COMMENT '新闻图片',
+  `content` text COMMENT '内容',
+  `summary` text COMMENT '摘要',
+  `author` varchar(100) DEFAULT NULL COMMENT '作者',
+  `status` int DEFAULT '0',
+  `reject_reason` varchar(255) DEFAULT NULL COMMENT '驳回原因',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted` int DEFAULT '0',
+  `create_user_id` int DEFAULT NULL COMMENT '创建者ID',
+  `is_top` tinyint DEFAULT '0' COMMENT '是否置顶（0-否，1-是）',
+  `view_count` int DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='新闻信息表';
+
+-- 创建动态附件表
+CREATE TABLE `news_attachment` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '附件主键ID',
+  `news_id` bigint NOT NULL COMMENT '所属新闻ID',
+  `file_name` varchar(255) NOT NULL COMMENT '文件名',
+  `file_url` varchar(500) NOT NULL COMMENT '文件URL',
+  `upload_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '上传时间',
+  PRIMARY KEY (`id`),
+  KEY `news_id` (`news_id`),
+  CONSTRAINT `news_attachment_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news_info` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='新闻附件表';
 ```
 ### 3.Springboot的application.yml配置
 ``` yml

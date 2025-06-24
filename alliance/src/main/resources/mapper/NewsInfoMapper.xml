@@ -5,6 +5,23 @@
 
 <mapper namespace="com.neu.alliance.mapper.NewsInfoMapper">
 
+    <resultMap id="newsInfoResultMap" type="com.neu.alliance.entity.NewsInfo">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="newsImage" column="news_image"/>
+        <result property="content" column="content"/>
+        <result property="summary" column="summary"/>
+        <result property="author" column="author"/>
+        <result property="status" column="status"/>
+        <result property="rejectReason" column="reject_reason"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="isTop" column="is_top"/>
+        <result property="viewCount" column="view_count"/>
+    </resultMap>
+
     <insert id="insert" parameterType="com.neu.alliance.entity.NewsInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO news_info
         (title, news_image, content, summary, author, status, reject_reason,
@@ -71,11 +88,11 @@
         DELETE FROM news_info WHERE id = #{id}
     </delete>
 
-    <select id="selectById" parameterType="long" resultType="com.neu.alliance.entity.NewsInfo">
+    <select id="selectById" parameterType="long" resultMap="newsInfoResultMap">
         SELECT * FROM news_info WHERE id = #{id} AND deleted = 0
     </select>
 
-    <select id="selectByQuery" parameterType="com.neu.alliance.dto.NewsQueryDTO" resultType="com.neu.alliance.entity.NewsInfo">
+    <select id="selectByQuery" parameterType="com.neu.alliance.dto.NewsQueryDTO" resultMap="newsInfoResultMap">
         SELECT * FROM news_info
         WHERE deleted = 0
         <if test="startTime != null">

@@ -22,8 +22,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-<<<<<<< HEAD
-=======
         // ✅ 放行静态资源路径
         if (uri.startsWith("/static/")) {
             return true;
@@ -36,7 +34,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
->>>>>>> main
         try {
             // 1. 获取 Authorization 头部的 token，格式为 "Bearer xxx.xxx.xxx"
             String authHeader = request.getHeader("Authorization");
@@ -86,10 +83,4 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
     }
-<<<<<<< HEAD
 }
-=======
-
-
-}
->>>>>>> main

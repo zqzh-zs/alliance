@@ -191,9 +191,13 @@ public class NewsInfoServiceImpl implements NewsInfoService {
     public void incrementViewCount(Long id) {
         NewsInfo news = newsInfoMapper.selectById(id);
         if (news != null) {
-            news.setViewCount(news.getViewCount() + 1);
-            // 不要更新 createTime 或 updateTime
-            newsInfoMapper.updateViewCount(news.getId(), news.getViewCount());
+            Integer currentViewCount = news.getViewCount();
+            if (currentViewCount == null) {
+                currentViewCount = 0;
+            }
+            currentViewCount += 1;
+            news.setViewCount(currentViewCount);
+            newsInfoMapper.updateViewCount(news.getId(), currentViewCount);
         }
     }
 }

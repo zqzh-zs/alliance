@@ -5,7 +5,16 @@
 
 <mapper namespace="com.neu.alliance.mapper.NewsAttachmentMapper">
 
-    <insert id="insert" parameterType="com.neu.alliance.entity.NewsAttachment">
+    <!-- 手动字段映射 -->
+    <resultMap id="newsAttachmentResultMap" type="com.neu.alliance.entity.NewsAttachment">
+        <id property="id" column="id"/>
+        <result property="newsId" column="news_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileUrl" column="file_url"/>
+        <result property="uploadTime" column="upload_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.neu.alliance.entity.NewsAttachment" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO news_attachment (news_id, file_name, file_url, upload_time)
         VALUES (#{newsId}, #{fileName}, #{fileUrl}, #{uploadTime})
     </insert>
@@ -14,32 +23,28 @@
         DELETE FROM news_attachment WHERE news_id = #{newsId}
     </delete>
 
-    <select id="selectByNewsId" parameterType="long" resultType="com.neu.alliance.entity.NewsAttachment">
+    <select id="selectByNewsId" parameterType="long" resultMap="newsAttachmentResultMap">
         SELECT * FROM news_attachment WHERE news_id = #{newsId}
     </select>
 
-    <update id="update" parameterType="com.neu.alliance.entity.NewsInfo">
-        UPDATE news_info
+    <!-- 修正为更新 news_attachment 表 -->
+    <update id="update" parameterType="com.neu.alliance.entity.NewsAttachment">
+        UPDATE news_attachment
         <set>
-            <if test="title != null">title = #{title},</if>
-            <if test="newsImage != null">news_image = #{newsImage},</if>
-            <if test="content != null">content = #{content},</if>
-            <if test="summary != null">summary = #{summary},</if>
-            <if test="author != null">author = #{author},</if>
-            <if test="status != null">status = #{status},</if>
-            <if test="rejectReason != null">reject_reason = #{rejectReason},</if>
-            <if test="deleted != null">deleted = #{deleted},</if>
-            <if test="isTop != null">is_top = #{isTop},</if>
-            <if test="viewCount != null">view_count = #{viewCount},</if>
-            update_time = NOW()
+            <if test="newsId != null">news_id = #{newsId},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="uploadTime != null">upload_time = #{uploadTime},</if>
         </set>
         WHERE id = #{id}
     </update>
-    <select id="selectById" parameterType="long" resultType="com.neu.alliance.entity.NewsAttachment">
+
+    <select id="selectById" parameterType="long" resultMap="newsAttachmentResultMap">
         SELECT * FROM news_attachment WHERE id = #{id}
     </select>
 
     <delete id="deleteById" parameterType="long">
         DELETE FROM news_attachment WHERE id = #{id}
     </delete>
+
 </mapper>

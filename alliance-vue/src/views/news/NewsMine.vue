@@ -139,6 +139,7 @@ import request from '@/utils/request'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { nextTick } from 'vue'
+import dayjs from 'dayjs'
 
 const router = useRouter()
 const query = reactive({
@@ -164,10 +165,13 @@ const saving = ref(false)
 const attachments = ref([])
 const uploadAttachmentRef = ref(null)
 
+// 监听时间范围的变化
 watch(queryTime, (val) => {
   if (val && val.length === 2) {
-    query.startTime = val[0]
-    query.endTime = val[1]
+    // 设置开始时间为当天 00:00:00
+    query.startTime = dayjs(val[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss')
+    // 设置结束时间为当天 23:59:59
+    query.endTime = dayjs(val[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss')
   } else {
     query.startTime = ''
     query.endTime = ''
@@ -190,10 +194,25 @@ const reset = () => {
 const handlePageChange = (val) => { query.pageNum = val; load() }
 
 const remove = (id) => {
-  request.delete(`/news/${id}`).then(() => {
-    ElMessage.success('删除成功')
-    load()
-  })
+  ElMessageBox.confirm(
+      '确定要删除这条动态吗？此操作无法撤销！',
+      '删除确认',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        return request.delete(`/news/${id}`)
+      })
+      .then(() => {
+        ElMessage.success('删除成功')
+        load()
+      })
+      .catch(() => {
+        // 用户点击“取消”或关闭弹窗，不做任何提示
+      })
 }
 
 const goDetail = (id) => { router.push(`/news/detail/${id}`) }
@@ -271,15 +290,6 @@ const formatDateTime = (value) => {
 }
 
 const uploadUrl = (newsId) => `/news/upload/${newsId}`
-
-// const handleUploadSuccess = (res) => {
-//   uploadingCover.value = false
-//   form.newsImage = res.fileUrl || res.data?.fileUrl || ''
-//   request.put(`/news/${form.id}`, { newsImage: form.newsImage }).then(() => {
-//     ElMessage.success('封面已更新')
-//     load()
-//   })
-// }
 
 const handleUploadSuccess = (res) => {
   uploadingCover.value = false

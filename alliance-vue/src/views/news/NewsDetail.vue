@@ -82,16 +82,15 @@ const statusTag = (status) => {
 
 onMounted(() => {
   request.get(`/news/${id}`).then(res => {
+    if (!res?.data) {
+      ElMessage.error("数据加载失败")
+      return
+    }
+
     info.value = res.data
     loaded.value = true
-
-    // ✅ 这里是调试的关键位置
-    console.log("user", user)
-    console.log("user.username", user.username)
-    console.log("info.author", res.data.author)
-    console.log("是否相等:", user.username == res.data.author)
-
-    console.log('详情页数据：', res.data)
+  }).catch(() => {
+    ElMessage.error("获取详情失败")
   })
 })
 </script>
