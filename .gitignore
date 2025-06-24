@@ -1,0 +1,9 @@
+# 前端忽略
+alliance-vue/node_modules/
+alliance-vue/dist/
+alliance-vue/.vite/
+
+# 后端忽略
+alliance/target/
+.idea/
+*.iml
