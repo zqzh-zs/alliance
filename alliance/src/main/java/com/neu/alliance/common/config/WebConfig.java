@@ -17,11 +17,10 @@ import java.io.IOException;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     @Autowired
     private LoginInterceptor loginInterceptor;
 
-<<<<<<< HEAD
-=======
     @Value("${upload.image-path}")
     private String imagePath;
 
@@ -30,47 +29,38 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("${upload.static-path}")
     private String staticPathPrefix;
->>>>>>> main
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
-<<<<<<< HEAD
                 .excludePathPatterns(
                         "/auth/company/register",
                         "/auth/login",
                         "/auth/checkCode",
-                        "/files/**",       // 放行所有 /files 下的请求，包括静态资源
+                        "/files/**",
                         "/news/upload/**"
                 );
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 静态资源映射
         registry.addResourceHandler("/files/**")
-                .addResourceLocations("file:/Users/zqz/local/alliance/uploads/");
-=======
-                .excludePathPatterns("/auth/company/register","/auth/login",
-            "/auth/checkCode","/files/download/**", "/files/upload");
-}
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        WebMvcConfigurer.super.addResourceHandlers(registry);
-
-        // 图片资源映射
+                .addResourceLocations("file:" + staticPathPrefix);
         registry.addResourceHandler("/static/image/**")
-                .addResourceLocations("file:E:/uploads/images/");
-        // 图片资源映射
+                .addResourceLocations("file:" + imagePath);
         registry.addResourceHandler("/static/video/**")
-                .addResourceLocations("file:E:/uploads/videos/");
+                .addResourceLocations("file:" + videoPath);
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations("file:/Users/zqz/local/alliance/uploads/");//调试
+
     }
 
     @Override
     public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*") // 允许所有源
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 关键：必须加 OPTIONS
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
@@ -79,11 +69,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
-        // 设置单个文件最大大小
         factory.setMaxFileSize(DataSize.ofMegabytes(100));
-        // 设置总请求最大大小
         factory.setMaxRequestSize(DataSize.ofMegabytes(100));
         return factory.createMultipartConfig();
->>>>>>> main
     }
 }
