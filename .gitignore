@@ -7,3 +7,5 @@ alliance-vue/.vite/
 alliance/target/
 .idea/
 *.iml
+node_modules/
+target/
