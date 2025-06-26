@@ -1,0 +1,16 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5022165",
+      "name": "浏览",
+      "font_class": "liulan-copy",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    }
+  ]
+}

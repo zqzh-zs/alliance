@@ -1,0 +1,16 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11372735",
+      "name": "增加",
+      "font_class": "zengjia",
+      "unicode": "e8c0",
+      "unicode_decimal": 59584
+    }
+  ]
+}

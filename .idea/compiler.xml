@@ -2,6 +2,10 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+<<<<<<< HEAD
+=======
+      <profile default="true" name="Default" enabled="true" />
+>>>>>>> faa059ef9276c08abe27d1aaf3b1f0446be68db0
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -9,9 +13,13 @@
         <module name="alliance" />
       </profile>
     </annotationProcessing>
+<<<<<<< HEAD
     <bytecodeTargetLevel>
       <module name="alliance" target="17" />
     </bytecodeTargetLevel>
+=======
+    <bytecodeTargetLevel target="17" />
+>>>>>>> faa059ef9276c08abe27d1aaf3b1f0446be68db0
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

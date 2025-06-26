@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+<<<<<<< HEAD
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+=======
+    <file url="file://$PROJECT_DIR$/alliance-springboot/src/main/java" charset="UTF-8" />
+>>>>>>> faa059ef9276c08abe27d1aaf3b1f0446be68db0
   </component>
 </project>

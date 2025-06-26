@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neu.alliance.mapper.CourseMapper">
+
+    <insert id="insertCourse" parameterType="com.neu.alliance.entity.Course"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO course (
+            course_name, cover_image, introduction, sort_order, video_url, author,
+            status, create_time, update_time
+        ) VALUES (
+                     #{course_name}, #{cover_image}, #{introduction}, #{sort_order}, #{video_url}, #{author},
+                     0, NOW(), NOW()
+                 )
+    </insert>
+
+
+    <insert id="addCourse" parameterType="com.neu.alliance.entity.Course"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO course (
+            course_name, cover_image, introduction, sort_order, video_url, author,
+            status, create_time, update_time
+        ) VALUES (
+                     #{course_name}, #{cover_image}, #{introduction}, #{sort_order}, #{video_url}, #{author},
+                     0, NOW(), NOW()
+                 )
+    </insert>
+
+    <!-- 查询所有课程，支持模糊查询 -->
+    <select id="selectAll" resultType="com.neu.alliance.entity.Course">
+        SELECT * FROM course
+        <where>
+            <!-- 模糊课程名 -->
+            <if test="course_name != null and course_name != ''">
+                AND course_name LIKE CONCAT('%', #{course_name}, '%')
+            </if>
+
+            <!-- 如果不是管理员则判断身份 -->
+            <if test="author_identity != null and author_identity != '' and author_identity != 'ADMIN'">
+                AND author_identity = #{author_identity}
+                <if test="author != null and author != ''">
+                    AND author = #{author}
+                </if>
+            </if>
+        </where>
+        ORDER BY id ASC
+    </select>
+
+
+    <!-- 分页查询（与 PageHelper 配合使用） -->
+    <select id="selectAllPaged" resultType="com.neu.alliance.entity.Course">
+        SELECT * FROM course
+        <where>
+            <if test="courseName != null and courseName != ''">
+                AND course_name LIKE CONCAT('%', #{courseName}, '%')
+            </if>
+            <if test="authorIdentity != null and authorIdentity != ''">
+                AND author_identity = #{authorIdentity}
+            </if>
+            <if test="author != null and author != ''">
+                AND author = #{author}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+    </select>
+    <!-- 根据ID删除课程 -->
+    <delete id="deleteById">
+        DELETE FROM course WHERE id = #{id}
+    </delete>
+
+    <!-- 更新课程 -->
+    <update id="updateCourse" parameterType="com.neu.alliance.entity.Course">
+        UPDATE course
+        <set>
+            <if test="course_name != null">course_name = #{course_name},</if>
+            <if test="cover_image != null">cover_image = #{cover_image},</if>
+            <if test="introduction != null">introduction = #{introduction},</if>
+            <if test="video_url != null">video_url = #{video_url},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="update_time != null">update_time = #{update_time},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="reject_reason != null">reject_reason = #{reject_reason},</if>
+
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="getById" parameterType="long" resultType="com.neu.alliance.entity.Course">
+        SELECT * FROM course WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultType="com.neu.alliance.entity.Course">
+        SELECT * FROM course
+        WHERE 1=1
+        <if test="courseName != null and courseName != ''">
+            AND course_name LIKE CONCAT('%', #{courseName}, '%')
+        </if>
+        <if test="authorIdentity != null and authorIdentity != ''">
+            <choose>
+                <when test="authorIdentity == 'ADMIN'">
+                    <!-- ADMIN 可以看所有符合条件的 -->
+                </when>
+                <otherwise>
+                    AND author = #{author}
+                </otherwise>
+            </choose>
+        </if>
+        ORDER BY update_time DESC
+    </select>
+</mapper>

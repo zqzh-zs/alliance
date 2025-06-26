@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/alliance?characterEncoding=utf-8&&userSSL=false
+    username: root
+    password: FredWeasley
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    static-path-pattern: /**   # 允许访问 static 映射
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+mybatis:
+  mapper-locations: [classpath:mapper/**Mapper.xml, classpath:generator/**Mapper.xml]
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false
+
+upload:
+  image-path: E:/uploads/images
+  video-path: E:/uploads/videos/
+  static-path: /static/

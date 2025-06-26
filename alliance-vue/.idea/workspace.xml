@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8aaed44f-66bd-4c26-8e9d-dcbe4653c4cb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Manager.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Manager.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manager/News.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/News.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manager/news/NewsAll.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/news/NewsAll.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manager/news/NewsDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/news/NewsDetail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manager/news/NewsMine.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/news/NewsMine.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alliance/src/main/java/com/neu/alliance/common/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../alliance/src/main/java/com/neu/alliance/common/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alliance/src/main/java/com/neu/alliance/common/interceptor/LoginInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../alliance/src/main/java/com/neu/alliance/common/interceptor/LoginInterceptor.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="customMavenHome" value="D:\Work\apache-maven-3.9.4" />
+        <option name="localRepository" value="D:\Work\apache-maven-3.9.4\mvn_repo" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
+        <option name="userSettingsFile" value="D:\Work\apache-maven-3.9.4\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2yt72u499FIkyT95JY1GpSso34m" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/zqz/alliance/alliance-vue",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev.executor": "Run",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/views" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.120" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8aaed44f-66bd-4c26-8e9d-dcbe4653c4cb" name="Changes" comment="" />
+      <created>1750641811652</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750641811652</updated>
+      <workItem from="1750641812817" duration="9244000" />
+      <workItem from="1750667269055" duration="17000" />
+      <workItem from="1750667493790" duration="36000" />
+      <workItem from="1750667538420" duration="55000" />
+      <workItem from="1750667694902" duration="72000" />
+      <workItem from="1750667786935" duration="146000" />
+      <workItem from="1750667945171" duration="84000" />
+      <workItem from="1750761417493" duration="5612000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neu.alliance.mapper.NewsAttachmentMapper">
+
+    <!-- 手动字段映射 -->
+    <resultMap id="newsAttachmentResultMap" type="com.neu.alliance.entity.NewsAttachment">
+        <id property="id" column="id"/>
+        <result property="newsId" column="news_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileUrl" column="file_url"/>
+        <result property="uploadTime" column="upload_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.neu.alliance.entity.NewsAttachment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO news_attachment (news_id, file_name, file_url, upload_time)
+        VALUES (#{newsId}, #{fileName}, #{fileUrl}, #{uploadTime})
+    </insert>
+
+    <delete id="deleteByNewsId" parameterType="long">
+        DELETE FROM news_attachment WHERE news_id = #{newsId}
+    </delete>
+
+    <select id="selectByNewsId" parameterType="long" resultMap="newsAttachmentResultMap">
+        SELECT * FROM news_attachment WHERE news_id = #{newsId}
+    </select>
+
+    <!-- 修正为更新 news_attachment 表 -->
+    <update id="update" parameterType="com.neu.alliance.entity.NewsAttachment">
+        UPDATE news_attachment
+        <set>
+            <if test="newsId != null">news_id = #{newsId},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="uploadTime != null">upload_time = #{uploadTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectById" parameterType="long" resultMap="newsAttachmentResultMap">
+        SELECT * FROM news_attachment WHERE id = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM news_attachment WHERE id = #{id}
+    </delete>
+
+</mapper>
