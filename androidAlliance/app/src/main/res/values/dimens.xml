@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- 列表项间距 -->
+    <dimen name="list_item_spacing">16dp</dimen>
+    <!-- 会议卡片间距 -->
+    <dimen name="conference_spacing">16dp</dimen>
+    <!-- 卡片圆角半径 -->
+    <dimen name="card_corner_radius">8dp</dimen>
+    <!-- 卡片阴影高度 -->
+    <dimen name="card_elevation">4dp</dimen>
+    <!-- 图片尺寸 -->
+    <dimen name="conference_image_height">120dp</dimen>
+    <dimen name="news_image_height">80dp</dimen>
+    <!-- 文本尺寸 -->
+    <dimen name="text_title">18sp</dimen>
+    <dimen name="text_subtitle">14sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+</resources>
