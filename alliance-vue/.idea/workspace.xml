@@ -4,19 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8aaed44f-66bd-4c26-8e9d-dcbe4653c4cb" name="Changes" comment="">
+    <list default="true" id="8aaed44f-66bd-4c26-8e9d-dcbe4653c4cb" name="Changes" comment="feat(alliance): 新增会议管理功能&#10;&#10;- 添加会议相关实体类和DTO&#10;- 实现会议创建、查询、审核、更新等功能- 集成会议管理页面和接口&#10;- 优化登录拦截器以支持会议相关操作">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/request.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Manager.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Manager.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manager/News.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/News.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manager/news/NewsAll.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/news/NewsAll.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manager/news/NewsDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/news/NewsDetail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manager/news/NewsMine.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/news/NewsMine.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../alliance/src/main/java/com/neu/alliance/common/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../alliance/src/main/java/com/neu/alliance/common/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../alliance/src/main/java/com/neu/alliance/common/interceptor/LoginInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../alliance/src/main/java/com/neu/alliance/common/interceptor/LoginInterceptor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +14,20 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Younglo-RGB"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="4079220d-4e7c-4fe0-9055-fe2752d066fb" />
+        <option name="url" value="https://github.com/HXZ-um/alliance.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -46,6 +49,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
@@ -58,7 +62,7 @@
     "nodejs_package_manager_path": "npm",
     "npm.dev.executor": "Run",
     "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "E:\\idea\\IntelliJ IDEA 2023.3.8\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -79,13 +83,6 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.120" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -102,10 +99,35 @@
       <workItem from="1750667786935" duration="146000" />
       <workItem from="1750667945171" duration="84000" />
       <workItem from="1750761417493" duration="5612000" />
+      <workItem from="1751030308572" duration="686000" />
     </task>
+    <task id="LOCAL-00001" summary="feat(alliance): 新增会议管理功能&#10;&#10;- 添加会议相关实体类和DTO&#10;- 实现会议创建、查询、审核、更新等功能- 集成会议管理页面和接口&#10;- 优化登录拦截器以支持会议相关操作">
+      <option name="closed" value="true" />
+      <created>1751030721802</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1751030721802</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat(alliance): 新增会议管理功能&#10;&#10;- 添加会议相关实体类和DTO&#10;- 实现会议创建、查询、审核、更新等功能- 集成会议管理页面和接口&#10;- 优化登录拦截器以支持会议相关操作" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(alliance): 新增会议管理功能&#10;&#10;- 添加会议相关实体类和DTO&#10;- 实现会议创建、查询、审核、更新等功能- 集成会议管理页面和接口&#10;- 优化登录拦截器以支持会议相关操作" />
   </component>
 </project>
