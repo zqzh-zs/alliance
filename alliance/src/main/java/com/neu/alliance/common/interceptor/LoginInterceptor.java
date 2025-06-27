@@ -30,7 +30,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         // ✅ 放行接口：课程图片上传、视频上传、添加课程
         if (uri.contains("/course/uploadImage") ||
                 uri.contains("/course/uploadVideo") ||
-                uri.contains("/addcourse")) {
+                uri.contains("/addcourse")||
+                uri.contains("/meeting/upload")){
             return true;
         }
 

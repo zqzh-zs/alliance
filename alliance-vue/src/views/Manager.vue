@@ -53,6 +53,21 @@
 		  		<span>课程编辑</span>
 		  	</el-menu-item>
 		  </el-sub-menu>
+		  <el-sub-menu index="4">
+		    <template #title>
+		      <el-icon><Calendar /></el-icon>
+		      <span>会议管理</span>
+		    </template>
+		  
+		    <el-menu-item index="/meeting/display">
+		      <el-icon><View /></el-icon>
+		      <span>会议展示</span>
+		    </el-menu-item>
+		    <el-menu-item index="/" @click="handleTaskManagementClick">
+		      <el-icon><Document /></el-icon>
+		      <span>任务管理</span>
+		    </el-menu-item>
+		  </el-sub-menu>
           <el-sub-menu index="2" v-if="data.user.role === 1">
             <template #title>
               <el-icon><User /></el-icon>
@@ -105,6 +120,18 @@ const logout = () => {
 const updateUser = () => {
   data.user = JSON.parse(localStorage.getItem('alliance-user') || '{}')
 
+}
+function handleTaskManagementClick() {
+  const user = JSON.parse(localStorage.getItem('alliance-user') || '{}')
+  console.log(user)
+  console.log(user.role)
+  if (user.role === 1) {
+    router.push('/meeting/admin/task')
+  } else if (user.role === 2) {
+    router.push('/meeting/user/task')
+  } else {
+    router.push('/')
+  }
 }
 
 </script>
