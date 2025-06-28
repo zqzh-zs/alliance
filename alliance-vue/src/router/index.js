@@ -28,7 +28,11 @@ const router = createRouter({
 
 		{ path:"/scancourse",name:"scancourse",component:()=>import("../views/Course/ScanCourse.vue")},
 		{ path:"/editcourse",name:"editcourse",component:()=>import("../views/Course/EditCourse.vue")},
-		{ path: '/collection/:id',name: 'collectionDetail',component: () => import('../components/Course/CourseCertainCollection.vue')}	
+		{ path: '/collection/:id',name: 'collectionDetail',component: () => import('../components/Course/CourseCertainCollection.vue')}	,
+	
+		{ path: '/meeting/display',name: 'meetingdisplay',component: () => import('../views/Meeting/MeetingDisplay.vue')},
+		{ path: '/meeting/admin/task',name: 'meetingtask_admin',component: () => import('../views/Meeting/MeetingTaskAdmin.vue')},
+		{ path: '/meeting/user/task',name: 'meetingtask_user',component: () => import('../views/Meeting/MeetingTaskUser.vue')},
 
       ]
     },

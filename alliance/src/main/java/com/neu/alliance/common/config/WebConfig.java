@@ -39,6 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/auth/login",
                         "/auth/checkCode",
                         "/files/**",
+                        "/uploads/**",
                         "/news/upload/**"
                 );
     }
@@ -53,6 +54,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + videoPath);
         registry.addResourceHandler("/files/**")
                 .addResourceLocations("file:/Users/zqz/local/alliance/uploads/");//调试
+        // 映射/uploads/** 到本地 uploads 文件夹
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:./uploads/");
 
     }
 

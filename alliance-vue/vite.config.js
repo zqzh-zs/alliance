@@ -10,24 +10,20 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 import ElementPlus from 'unplugin-element-plus/vite'
 
-
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver(
-          { importStyle: 'sass' }
-      )],
+      resolvers: [
+        ElementPlusResolver({ importStyle: 'sass' })
+      ],
     }),
     Components({
-      resolvers: [ElementPlusResolver(
-          { importStyle: 'sass' }
-      )],
+      resolvers: [
+        ElementPlusResolver({ importStyle: 'sass' })
+      ],
     }),
-
-
     // 按需定制主题配置
     ElementPlus({
       useSource: true,
@@ -48,7 +44,6 @@ export default defineConfig({
       }
     }
   },
-
   server: {
     proxy: {
       '/files': {
@@ -57,16 +52,21 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/files/, '/files')
       },
       '/auth': {
-        target: 'http://localhost:8080', // Spring Boot 后端端口
+        target: 'http://localhost:8080',
         changeOrigin: true
       },
       '/news': {
-        target: 'http://localhost:8080', // ✅ 代理 news 相关接口到后端
+        target: 'http://localhost:8080',
         changeOrigin: true
-      }
+      },
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true
+      },
+	  '/uploads': {
+	      target: 'http://localhost:8080',
+	      changeOrigin: true,
+	    }
     }
   }
-
-
-
 })
