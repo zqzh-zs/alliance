@@ -1,1 +1,0 @@
-int style FragmentScenarioEmptyFragmentActivityTheme 0x0
