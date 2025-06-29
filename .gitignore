@@ -12,3 +12,4 @@ target/
 .DS_Store
 .idea/
 
+androidAlliance/gradle/caches/
