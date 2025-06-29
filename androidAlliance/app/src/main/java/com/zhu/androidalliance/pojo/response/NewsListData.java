@@ -14,5 +14,8 @@ import lombok.NoArgsConstructor;
 public class NewsListData {
     private int total;
     private List<NewsInfo> list;
+    private int pageNum;
+    private int pageSize;
+    private int totalPages;
 
 }

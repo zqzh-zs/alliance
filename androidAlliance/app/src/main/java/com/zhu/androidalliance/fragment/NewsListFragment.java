@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.zhu.androidalliance.NewsInfoDetailActivity;
 import com.zhu.androidalliance.R;
 import com.zhu.androidalliance.adapter.NewsAdapter;
@@ -34,11 +35,12 @@ import com.zhu.androidalliance.callback.DataCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NewsListFragment extends Fragment {
-
+    private final ExecutorService searchExecutor = Executors.newSingleThreadExecutor();
     // UI 组件
-
     private RecyclerView rvNews;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressBar, progressBottom;
@@ -53,18 +55,18 @@ public class NewsListFragment extends Fragment {
     private boolean isLoading = false;
     private String currentKeyword = "";
 
+    // 数据存储
+    private List<NewsInfo> allNewsList = new ArrayList<>(); // 存储所有已加载的数据
+    private List<NewsInfo> filteredList = new ArrayList<>(); // 存储过滤后的数据
+
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final int SEARCH_DELAY = 500;
 
+    // 新增：本地搜索的Runnable
     private final Runnable searchRunnable = new Runnable() {
         @Override
         public void run() {
-            if (!TextUtils.isEmpty(currentKeyword)) {
-                loadFirstPage();
-            } else {
-                // 当搜索框清空时，重新加载第一页
-                loadFirstPage();
-            }
+            applyLocalSearch();
         }
     };
 
@@ -111,14 +113,14 @@ public class NewsListFragment extends Fragment {
             // 设置搜索图标点击监听
             searchIcon.setOnClickListener(v -> {
                 hideKeyboard();
-                loadFirstPage();
+                applyLocalSearch(); // 改为本地搜索
             });
 
             // 设置清除图标点击监听
             clearIcon.setOnClickListener(v -> {
                 searchEditText.setText("");
                 currentKeyword = "";
-                loadFirstPage();
+                applyLocalSearch(); // 清除搜索条件
             });
         }
     }
@@ -143,29 +145,22 @@ public class NewsListFragment extends Fragment {
         int spacing = getResources().getDimensionPixelSize(R.dimen.list_item_spacing);
         rvNews.addItemDecoration(new VerticalSpaceItemDecoration(spacing));
 
-        newsAdapter = new NewsAdapter(new ArrayList<>());
+        newsAdapter = new NewsAdapter(filteredList); // 使用过滤后的列表
         rvNews.setAdapter(newsAdapter);
         newsAdapter.setOnItemClickListener(this::openNewsDetail);
-
-        // 滚动监听实现上拉加载
         rvNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (layoutManager == null) return;
+                if (layoutManager == null || isLoading || !hasMore) return;
 
-                int visibleItemCount = layoutManager.getChildCount();
+                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
                 int totalItemCount = layoutManager.getItemCount();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-                if (!isLoading && hasMore) {
-                    // 滚动到底部时加载更多
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                            && totalItemCount >= pageSize) {
-                        loadNextPage();
-                    }
+                // 提前3项加载更多
+                if (lastVisibleItem >= totalItemCount - 3) {
+                    loadNextPage();
                 }
             }
         });
@@ -184,7 +179,11 @@ public class NewsListFragment extends Fragment {
                 @Override
                 public void afterTextChanged(Editable s) {
                     currentKeyword = s.toString().trim();
+
+                    // 移除之前的搜索请求
                     handler.removeCallbacks(searchRunnable);
+
+                    // 延迟触发本地搜索
                     handler.postDelayed(searchRunnable, SEARCH_DELAY);
                 }
             });
@@ -193,11 +192,63 @@ public class NewsListFragment extends Fragment {
             searchEditText.setOnEditorActionListener((v, actionId, event) -> {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     hideKeyboard();
-                    loadFirstPage();
+                    applyLocalSearch(); // 改为本地搜索
                     return true;
                 }
                 return false;
             });
+        }
+    }
+
+    // 新增：应用本地搜索
+    private void applyLocalSearch() {
+        if (TextUtils.isEmpty(currentKeyword)) {
+            // 没有关键词时显示所有数据
+            filteredList.clear();
+            filteredList.addAll(allNewsList);
+        } else {
+            // 执行模糊搜索
+            filteredList.clear();
+            String lowerCaseKeyword = currentKeyword.toLowerCase();
+
+            for (NewsInfo news : allNewsList) {
+                boolean matchTitle = news.getTitle() != null &&
+                        news.getTitle().toLowerCase().contains(lowerCaseKeyword);
+
+                boolean matchSummary = news.getSummary() != null &&
+                        news.getSummary().toLowerCase().contains(lowerCaseKeyword);
+
+                if (matchTitle || matchSummary) {
+                    filteredList.add(news);
+                }
+            }
+        }
+
+        // 更新UI
+        updateUIAfterSearch();
+    }
+
+    // 新增：搜索后更新UI
+    private void updateUIAfterSearch() {
+        newsAdapter.notifyDataSetChanged();
+
+        // 处理空状态
+        boolean isEmpty = filteredList.isEmpty();
+        showEmptyState(isEmpty);
+        if (isEmpty) {
+            if (!TextUtils.isEmpty(currentKeyword)) {
+                tvEmptyState.setText("没有找到相关动态");
+            } else {
+                tvEmptyState.setText("暂无动态数据");
+            }
+        }
+
+        // 显示搜索提示
+        if (!TextUtils.isEmpty(currentKeyword)) {
+            tvSearchHint.setText("搜索: " + currentKeyword + " (共 " + filteredList.size() + " 条结果)");
+            tvSearchHint.setVisibility(View.VISIBLE);
+        } else {
+            tvSearchHint.setVisibility(View.GONE);
         }
     }
 
@@ -208,7 +259,9 @@ public class NewsListFragment extends Fragment {
     private void loadFirstPage() {
         currentPage = 1;
         hasMore = true;
-        newsAdapter.clearData();
+        allNewsList.clear(); // 清空所有数据
+        filteredList.clear(); // 清空过滤数据
+        newsAdapter.notifyDataSetChanged(); // 通知适配器更新
         loadNews();
     }
 
@@ -231,7 +284,7 @@ public class NewsListFragment extends Fragment {
         isLoading = true;
 
         // 使用GetListUtil获取新闻数据
-        GetListUtil.getNewsList(currentPage, pageSize, currentKeyword, new DataCallback<NewsInfo>() {
+        GetListUtil.getNewsList(currentPage, pageSize, new DataCallback<NewsInfo>() {
             @Override
             public void onSuccess(List<NewsInfo> list, int totalCount) {
                 if (getActivity() != null) {
@@ -253,42 +306,25 @@ public class NewsListFragment extends Fragment {
     }
 
     private void handleNewsList(List<NewsInfo> newsList, int totalCount) {
+        // 将新数据添加到完整列表
+        allNewsList.addAll(newsList);
+
+        // 应用当前搜索条件
+        applyLocalSearch();
+
         // 计算是否还有更多数据
         hasMore = (currentPage * pageSize) < totalCount;
 
         // 更新UI
         if (currentPage == 1) {
-            newsAdapter.updateData(newsList);
             swipeRefreshLayout.setRefreshing(false);
-            if (!newsList.isEmpty()) {
+            if (!filteredList.isEmpty()) {
                 rvNews.scrollToPosition(0); // 滚动到顶部
             }
-        } else {
-            newsAdapter.appendData(newsList);
         }
 
         showLoading(false);
         progressBottom.setVisibility(View.GONE);
-
-        // 处理空状态
-        boolean isEmpty = newsList.isEmpty();
-        showEmptyState(isEmpty);
-        if (isEmpty) {
-            if (!TextUtils.isEmpty(currentKeyword)) {
-                tvEmptyState.setText("没有找到相关动态");
-            } else {
-                tvEmptyState.setText("暂无动态数据");
-            }
-        }
-
-        // 显示搜索提示
-        if (!TextUtils.isEmpty(currentKeyword)) {
-            tvSearchHint.setText("搜索: " + currentKeyword + " (共 " + totalCount + " 条结果)");
-            tvSearchHint.setVisibility(View.VISIBLE);
-        } else {
-            tvSearchHint.setVisibility(View.GONE);
-        }
-
         isLoading = false;
     }
 
@@ -312,7 +348,7 @@ public class NewsListFragment extends Fragment {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         rvNews.setVisibility(isLoading ? View.GONE : View.VISIBLE);
         if (!isLoading) {
-            tvEmptyState.setVisibility(newsAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            tvEmptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -324,5 +360,12 @@ public class NewsListFragment extends Fragment {
         Intent intent = new Intent(getActivity(), NewsInfoDetailActivity.class);
         intent.putExtra("newsInfo", news);
         startActivity(intent);
+    }
+
+    // 在Fragment销毁时关闭线程池
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        searchExecutor.shutdownNow();
     }
 }

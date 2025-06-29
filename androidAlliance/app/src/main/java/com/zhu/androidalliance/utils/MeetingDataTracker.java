@@ -8,8 +8,9 @@ import android.net.NetworkInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.zhu.androidalliance.common.Commons;
 import com.zhu.androidalliance.enums.BehaviorType;
-import com.zhu.androidalliance.pojo.dataObject.MeetingBehavior;
+import com.zhu.androidalliance.pojo.dataObject.MeetingTracker;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,7 +18,6 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +33,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MeetingBehaviorTracker {
+public class MeetingDataTracker {
     // 配置常量
-    private static final String BEHAVIOR_API_URL = "https://your-api-domain.com/api/meeting/behavior";
+    private static final String BEHAVIOR_API_URL = Commons.BASE_HOST+"/meeting/track";
     private static final int MAX_RETRIES = 3;
     private static final long RETRY_DELAY_MS = 5000;
     private static final String QUEUE_NAME = "meeting_behavior_queue";
@@ -44,7 +44,7 @@ public class MeetingBehaviorTracker {
     private static final Object LOCK = new Object(); // 并发锁
 
     // 使用ConcurrentHashMap存储会议ID与MeetingBehavior的映射关系
-    private static final Map<Integer, MeetingBehavior> behaviorMap = new ConcurrentHashMap<>();
+    private static final Map<Integer, MeetingTracker> behaviorMap = new ConcurrentHashMap<>();
 
     // 线程池优化
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -64,8 +64,8 @@ public class MeetingBehaviorTracker {
         String json = prefs.getString("behavior_map", "{}");
 
         Gson gson = new Gson();
-        Type type = new TypeToken<Map<Integer, MeetingBehavior>>(){}.getType();
-        Map<Integer, MeetingBehavior> cachedMap = gson.fromJson(json, type);
+        Type type = new TypeToken<Map<Integer, MeetingTracker>>(){}.getType();
+        Map<Integer, MeetingTracker> cachedMap = gson.fromJson(json, type);
 
         if (cachedMap != null) {
             behaviorMap.putAll(cachedMap);
@@ -84,13 +84,13 @@ public class MeetingBehaviorTracker {
     }
 
     // 获取特定会议的MeetingBehavior对象，如果不存在则创建
-    public static MeetingBehavior getBehavior(Integer meetingId) {
+    public static MeetingTracker getBehavior(Integer meetingId) {
         if (meetingId == null) {
             throw new IllegalArgumentException("Meeting ID cannot be null");
         }
 
         return behaviorMap.computeIfAbsent(meetingId, k -> {
-            MeetingBehavior behavior = new MeetingBehavior();
+            MeetingTracker behavior = new MeetingTracker();
             behavior.setMeetingId(meetingId);
             return behavior;
         });
@@ -105,7 +105,7 @@ public class MeetingBehaviorTracker {
         if (meetingId == null) return;
 
         // 获取或创建会议行为对象
-        MeetingBehavior behavior = getBehavior(meetingId);
+        MeetingTracker behavior = getBehavior(meetingId);
 
         // 根据行为类型更新计数
         switch (type) {
@@ -127,7 +127,7 @@ public class MeetingBehaviorTracker {
     }
 
     // 发送行为数据到服务器
-    private static void sendBehaviorData(MeetingBehavior behavior) {
+    private static void sendBehaviorData(MeetingTracker behavior) {
         executor.execute(() -> {
             // 1. 序列化行为数据
             String json = new Gson().toJson(behavior);

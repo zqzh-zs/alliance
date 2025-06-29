@@ -21,6 +21,7 @@ import com.zhu.androidalliance.callback.DataCallback;
 import com.zhu.androidalliance.decoration.HorizontalSpaceItemDecoration;
 import com.zhu.androidalliance.adapter.MeetingAdapter;
 import com.zhu.androidalliance.adapter.NewsAdapter;
+import com.zhu.androidalliance.enums.MeetingType;
 import com.zhu.androidalliance.pojo.dataObject.Meeting;
 import com.zhu.androidalliance.pojo.dataObject.NewsInfo;
 import com.zhu.androidalliance.utils.GetListUtil;
@@ -69,6 +70,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
     private void setupFeaturedMeetings() {
         // 配置横向布局管理器
         LinearLayoutManager layoutManager = new LinearLayoutManager(
@@ -89,6 +91,39 @@ public class HomeFragment extends Fragment {
         });
 
         rvFeaturedMeetings.setAdapter(featuredMeetingAdapter);
+
+        // 初始显示空列表
+        featuredMeetingAdapter = new MeetingAdapter(new ArrayList<>(), meeting -> {
+            openMeetingDetail(meeting);
+        });
+        rvFeaturedMeetings.setAdapter(featuredMeetingAdapter);
+
+        // 异步加载数据
+        loadFeaturedMeetings();
+    }
+
+    private void loadFeaturedMeetings() {
+        GetListUtil.getAllMeetingsByType(MeetingType.SEMINAR, new DataCallback<Meeting>() {
+            @Override
+            public void onSuccess(List<Meeting> resultMeetings, int total) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        if (featuredMeetingAdapter != null) {
+                            featuredMeetingAdapter.updateData(resultMeetings);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                if (mContext != null) {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(mContext, "获取会议列表失败", Toast.LENGTH_SHORT).show()
+                    );
+                }
+            }
+        });
     }
 
     private void setupLatestNews() {
@@ -105,11 +140,43 @@ public class HomeFragment extends Fragment {
         });
 
         rvLatestNews.setAdapter(newsAdapter);
+
+        // 初始显示空列表
+        newsAdapter = new NewsAdapter(new ArrayList<>());
+        newsAdapter.setOnItemClickListener(this::openNewsDetail);
+        rvLatestNews.setAdapter(newsAdapter);
+
+        // 异步加载数据
+        loadLatestNews();
+    }
+
+    private void loadLatestNews() {
+        GetListUtil.getLatestNews(new DataCallback<NewsInfo>() {
+            @Override
+            public void onSuccess(List<NewsInfo> resultNews, int total) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        if (newsAdapter != null) {
+                            newsAdapter.updateData(resultNews);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                if (mContext != null) {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(mContext, "获取最新动态列表失败", Toast.LENGTH_SHORT).show()
+                    );
+                }
+            }
+        });
     }
 
     private List<Meeting> getFeaturedMeetings() {
         List<Meeting> meetings = new ArrayList<>();
-        GetListUtil.getAllMeetings(new DataCallback<Meeting>() {
+        GetListUtil.getAllMeetingsByType(MeetingType.SEMINAR, new DataCallback<Meeting>() {
             @Override
             public void onSuccess(List<Meeting> resultMeetings, int total) {
                 meetings.addAll(resultMeetings);
@@ -133,6 +200,7 @@ public class HomeFragment extends Fragment {
         });
         return meetings;
     }
+
 
     private List<NewsInfo> getLatestNews() {
         List<NewsInfo> newsList = new ArrayList<>();

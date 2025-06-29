@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.zhu.androidalliance.fragment.HomeFragment;
 import com.zhu.androidalliance.fragment.MeetingListFragment;
 import com.zhu.androidalliance.fragment.NewsListFragment;
-import com.zhu.androidalliance.utils.NewsBehaviorTracker;
+import com.zhu.androidalliance.utils.NewsDataTracker;
 
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        NewsBehaviorTracker.initialize(this);
+        NewsDataTracker.initialize(this);
 
         // 初始化视图
         viewPager = findViewById(R.id.viewPager);

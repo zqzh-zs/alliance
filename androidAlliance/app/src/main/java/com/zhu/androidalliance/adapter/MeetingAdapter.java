@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.zhu.androidalliance.R;
 import com.zhu.androidalliance.pojo.dataObject.Meeting;
 import com.zhu.androidalliance.utils.DateFormatUtil;
+import com.zhu.androidalliance.utils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,6 @@ public class MeetingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<Meeting> dataList;
     private final OnMeetingClickListener listener;
 
-    private static final RequestOptions glideOptions = new RequestOptions()
-            .placeholder(R.drawable.ic_placeholder)
-            .error(R.drawable.ic_error)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .centerCrop();
 
     public MeetingAdapter(List<Meeting> dataList, OnMeetingClickListener listener) {
         this.dataList = dataList != null ? dataList : new ArrayList<>();
@@ -98,11 +94,8 @@ public class MeetingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         public void bind(Meeting meeting, OnMeetingClickListener listener) {
-            // 加载图片
-            Glide.with(itemView.getContext())
-                    .load(meeting.getImageUrl())
-                    .apply(glideOptions)
-                    .into(ivMeetingImage);
+
+            ImageLoader.loadImage(itemView.getContext(),meeting.getImageUrl(),ivMeetingImage,R.drawable.ic_placeholder);
 
             tvMeetingTitle.setText(meeting.getTitle());
             tvMeetingType.setText(meeting.getType().getDisplayName());

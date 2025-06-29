@@ -26,8 +26,9 @@ public class OkHttpUtil {
 
         client = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS) // 连接超时
+                .readTimeout(15, TimeUnit.SECONDS)    // 读取超时
+                .writeTimeout(15, TimeUnit.SECONDS)   // 写入超时
                 .build();
     }
 

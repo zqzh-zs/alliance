@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MeetingBehavior {
+public class MeetingTracker {
     private Integer meetingId = -1;       // 浏览的动态ID
     private int formSubmitCount;
     private int viewCount;

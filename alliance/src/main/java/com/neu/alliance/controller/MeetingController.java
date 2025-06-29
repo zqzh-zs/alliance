@@ -1,8 +1,8 @@
 package com.neu.alliance.controller;
 
-import com.neu.alliance.entity.Meeting;
-import com.neu.alliance.entity.MeetingStatus;
-import com.neu.alliance.entity.Response;
+import com.neu.alliance.entity.*;
+import com.neu.alliance.mapper.AgendaMapper;
+import com.neu.alliance.mapper.GuestMapper;
 import com.neu.alliance.mapper.MeetingMapper;
 import com.neu.alliance.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,11 @@ import java.util.Map;
 @RequestMapping("/api/meeting")
 public class MeetingController {
     private MeetingMapper meetingMapper;
+    @Autowired
+    private GuestMapper guestMapper;
+    @Autowired
+    private AgendaMapper agendaMapper;
+
 
     @Autowired
     public void setMeetingMapper(MeetingMapper meetingMapper) {
@@ -115,12 +120,35 @@ public class MeetingController {
     ) {
         int offset = (page - 1) * pageSize;
         List<Meeting> meetings = meetingMapper.searchMeetings(type, keyword, organizer, startDate, endDate, offset, pageSize);
+        for (Meeting meeting : meetings){
+            List<Guest> guests = guestMapper.getGuestsByMeetingId(meeting.getId());
+            meeting.setGuests(guests);
+            List<AgendaItem> agendaItems = agendaMapper.getAgendaItemsByMeetingId(meeting.getId());
+            meeting.setAgendaItems(agendaItems);
+        }
         int total = meetingMapper.countMeetings(type, keyword, organizer, startDate, endDate);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("code", 200);
         result.put("list", meetings);
         result.put("total", total);
+        return result;
+    }
+
+    @GetMapping("/searchAll")
+    public Map<String, Object> searchAll(
+            @RequestParam(defaultValue = "SEMINAR")  MeetingType type
+    ) {
+
+        List<Meeting> meetings = meetingMapper.selectApprovedByType(type);
+        for (Meeting meeting : meetings){
+            List<Guest> guests = guestMapper.getGuestsByMeetingId(meeting.getId());
+            meeting.setGuests(guests);
+            List<AgendaItem> agendaItems = agendaMapper.getAgendaItemsByMeetingId(meeting.getId());
+            meeting.setAgendaItems(agendaItems);
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("list", meetings);
+        result.put("total", meetings.size());
         return result;
     }
 

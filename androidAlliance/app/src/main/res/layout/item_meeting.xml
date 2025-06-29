@@ -19,7 +19,7 @@
             android:id="@+id/ivMeetingImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:contentDescription="会议图片"
             android:background="#F5F5F5"/>
 

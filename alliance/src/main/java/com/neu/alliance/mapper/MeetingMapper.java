@@ -33,6 +33,7 @@ public interface MeetingMapper {
     List<Meeting> selectApprovedByType(@Param("type") MeetingType type);
 
 
+
     /**
      * 查询所有会议，可按状态过滤。
      * 如果status为空则返回所有会议。

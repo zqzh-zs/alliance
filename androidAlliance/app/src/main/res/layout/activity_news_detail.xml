@@ -227,12 +227,14 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- 底部操作栏 -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <ProgressBar
+        android:id="@+id/pbLoading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@android:color/white"
-        android:elevation="8dp"
-        app:menu="@menu/bottom_navigation_menu" />
+        android:layout_height="4dp"
+        android:layout_gravity="top"
+        android:indeterminate="true"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@android:drawable/progress_horizontal" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

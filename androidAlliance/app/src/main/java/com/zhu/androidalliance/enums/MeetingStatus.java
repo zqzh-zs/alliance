@@ -2,10 +2,11 @@ package com.zhu.androidalliance.enums;
 
 public enum MeetingStatus {
 
-    DRAFT("草稿", "DRAFT"),
     PENDING("待审核", "PENDING"),
     APPROVED("已通过", "APPROVED"),
-    REJECTED("已驳回", "REJECTED");
+    REJECTED("已驳回", "REJECTED"),
+
+    OVER("已结束", "OVER");
 
     private final String label;  // 中文含义或显示名
     private final String code;   // 数据库存的值

@@ -84,6 +84,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("org.mockito:mockito-android:4.0.0") // 仅用于androidTest
 
-    // Fragment测试(仪器测试)
-    androidTestImplementation("androidx.fragment:fragment-testing:1.6.1")
+
 }

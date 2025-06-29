@@ -3,6 +3,7 @@ package com.zhu.androidalliance.adapter;
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.zhu.androidalliance.R;
 import com.zhu.androidalliance.pojo.dataObject.NewsInfo;
 import com.zhu.androidalliance.utils.DateFormatUtil;
+import com.zhu.androidalliance.utils.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +28,6 @@ import java.util.logging.SimpleFormatter;
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<NewsInfo> dataList;
     private OnItemClickListener itemClickListener;
-
-    private final RequestOptions glideOptions = new RequestOptions()
-            .placeholder(R.drawable.ic_placeholder)
-            .error(R.drawable.ic_error)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .centerCrop();
 
     public NewsAdapter(List<NewsInfo> dataList) {
         this.dataList = dataList;
@@ -78,10 +74,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             // 使用Glide加载图片
             if (!TextUtils.isEmpty(newsInfo.getNewsImage())) {
-                Glide.with(viewHolder.itemView.getContext())
-                        .load(newsInfo.getNewsImage())
-                        .apply(glideOptions)
-                        .into(viewHolder.image);
+                ImageLoader.loadImage(viewHolder.itemView.getContext(),newsInfo.getNewsImage(),viewHolder.image,R.drawable.ic_placeholder);
+
             } else {
                 viewHolder.image.setImageResource(R.drawable.ic_placeholder);
             }

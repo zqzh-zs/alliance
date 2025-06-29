@@ -12,7 +12,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.zhu.androidalliance.callback.JsonCallback;
 import com.zhu.androidalliance.common.Commons;
 import com.zhu.androidalliance.enums.BehaviorType;
-import com.zhu.androidalliance.utils.MeetingBehaviorTracker;
+import com.zhu.androidalliance.utils.MeetingDataTracker;
 import com.zhu.androidalliance.utils.OkHttpUtil;
 
 import org.json.JSONException;
@@ -166,7 +166,7 @@ public class AttendanceFormActivity extends AppCompatActivity {
                     // 获取会议ID并记录提交行为
                     Integer meetingId = getIntent().getIntExtra("meetingId", -1);
                     if (meetingId != -1) {
-                        MeetingBehaviorTracker.track(meetingId, BehaviorType.SUBMIT);
+                        MeetingDataTracker.track(meetingId, BehaviorType.SUBMIT);
                     }
                     new Handler(Looper.getMainLooper()).postDelayed(() -> finish(), 1500);
                 });

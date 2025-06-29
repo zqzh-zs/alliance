@@ -19,7 +19,7 @@ import com.zhu.androidalliance.adapter.AgendaAdapter;
 import com.zhu.androidalliance.adapter.GuestAdapter;
 import com.zhu.androidalliance.enums.MeetingType;
 import com.zhu.androidalliance.pojo.dataObject.Meeting;
-import com.zhu.androidalliance.utils.MeetingBehaviorTracker;
+import com.zhu.androidalliance.utils.MeetingDataTracker;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -53,7 +53,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        MeetingBehaviorTracker.initialize(this);
+        MeetingDataTracker.initialize(this);
 
         initViews();
         setupToolbar();
@@ -103,7 +103,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         tvMeetingType.setBackgroundColor(bgColor);
 
         // 格式化日期时间
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日 HH:mm", Locale.getDefault());
         String dateStr = sdf.format(meeting.getStartTime()) + " - " +
                 sdf.format(meeting.getEndTime());
         tvMeetingDate.setText(dateStr);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neu.alliance.mapper.AgendaMapper">
+
+    <!-- 定义 AgendaItem 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.neu.alliance.entity.AgendaItem">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="meeting_id" property="meetingId" jdbcType="INTEGER"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <!-- 根据会议ID获取议程项目列表 -->
+    <select id="getAgendaItemsByMeetingId" resultMap="BaseResultMap">
+        SELECT * FROM agenda_item
+        WHERE meeting_id = #{meetingId}
+        ORDER BY start_time ASC
+    </select>
+
+</mapper>

@@ -70,7 +70,7 @@ public class NewsController {
     }
 
     @GetMapping("/list")
-    public Map<String, Object> list(NewsQueryDTO query, @RequestAttribute("user") User user) {
+    public Map<String, Object> list(NewsQueryDTO query, @RequestAttribute("user") @RequestBody(required = false) User user) {
         if (Boolean.TRUE.equals(query.getOnlyMine())) {
             query.setCreateUserId(user.getId());
         }
@@ -93,6 +93,20 @@ public class NewsController {
         res.put("pageSize", query.getPageSize());
         res.put("totalPages", (total + query.getPageSize() - 1) / query.getPageSize());
 
+        return res;
+    }
+
+    @GetMapping("/getNews")
+    public Map<String, Object> getNews(@RequestParam int page, @RequestParam int pageSize) {
+        NewsQueryDTO query = new NewsQueryDTO();
+        query.setPageNum(page);
+        query.setPageSize(pageSize);
+        List<NewsInfo> list = newsInfoService.listByQuery(query);
+        int total = newsInfoService.countByQuery(query);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("total", total);
+        res.put("list", list);
         return res;
     }
 

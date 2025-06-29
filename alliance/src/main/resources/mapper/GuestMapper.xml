@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neu.alliance.mapper.GuestMapper">
+
+    <!-- 定义 Guest 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.neu.alliance.entity.Guest">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="meeting_id" property="meetingId" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="organization" property="organization" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 根据会议ID获取嘉宾列表 -->
+    <select id="getGuestsByMeetingId" resultMap="BaseResultMap">
+        SELECT * FROM guest
+        WHERE meeting_id = #{meetingId}
+        ORDER BY id ASC
+    </select>
+
+</mapper>

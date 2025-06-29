@@ -7,7 +7,8 @@ import android.net.NetworkInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.zhu.androidalliance.pojo.dataObject.NewsBehavior;
+import com.zhu.androidalliance.common.Commons;
+import com.zhu.androidalliance.pojo.dataObject.NewsTracker;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,9 +31,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class NewsBehaviorTracker {
+public class NewsDataTracker {
     // 配置常量
-    private static final String BEHAVIOR_API_URL = "https://your-api-domain.com/api/behavior/track";
+    private static final String BEHAVIOR_API_URL = Commons.BASE_HOST+"/news/track";
     private static final int MAX_RETRIES = 3;
     private static final long RETRY_DELAY_MS = 5000;
     private static final String QUEUE_NAME = "behavior_queue_v2";
@@ -41,7 +42,7 @@ public class NewsBehaviorTracker {
     private static final Object LOCK = new Object(); // 并发锁
 
     // 使用ConcurrentHashMap存储新闻ID与Behavior的映射关系
-    private static final Map<Integer, NewsBehavior> behaviorMap = new ConcurrentHashMap<>();
+    private static final Map<Integer, NewsTracker> behaviorMap = new ConcurrentHashMap<>();
 
     // 线程池优化
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -60,8 +61,8 @@ public class NewsBehaviorTracker {
         SharedPreferences prefs = appContext.getSharedPreferences(BEHAVIOR_CACHE, Context.MODE_PRIVATE);
         String json = prefs.getString("behavior_map", "{}");
 
-        Type type = new TypeToken<Map<Integer, NewsBehavior>>(){}.getType();
-        Map<Integer, NewsBehavior> cachedMap = JsonUtil.fromJson(json, type);
+        Type type = new TypeToken<Map<Integer, NewsTracker>>(){}.getType();
+        Map<Integer, NewsTracker> cachedMap = JsonUtil.fromJson(json, type);
 
         if (cachedMap != null) {
             behaviorMap.putAll(cachedMap);
@@ -80,33 +81,33 @@ public class NewsBehaviorTracker {
     }
 
     // 获取特定新闻的Behavior对象，如果不存在则创建
-    public static NewsBehavior getBehavior(Integer newsId) {
+    public static NewsTracker getBehavior(Integer newsId) {
         if (newsId == null) {
             throw new IllegalArgumentException("News ID cannot be null or empty");
         }
 
         return behaviorMap.computeIfAbsent(newsId, k -> {
-            NewsBehavior newsBehavior = new NewsBehavior();
-            newsBehavior.setNewsId(newsId);
-            return newsBehavior;
+            NewsTracker newsTracker = new NewsTracker();
+            newsTracker.setNewsId(newsId);
+            return newsTracker;
         });
     }
 
-    public static void track(NewsBehavior newsBehavior) {
+    public static void track(NewsTracker newsTracker) {
         if (appContext == null) {
             throw new IllegalStateException("Call BehaviorTracker.initialize() first!");
         }
 
-        if (newsBehavior == null || newsBehavior.getNewsId() == null) return;
+        if (newsTracker == null || newsTracker.getNewsId() == null) return;
 
         // 更新内存中的Behavior数据
-        behaviorMap.put(newsBehavior.getNewsId(), newsBehavior);
+        behaviorMap.put(newsTracker.getNewsId(), newsTracker);
         // 保存到本地缓存
         saveBehaviorCache();
 
         executor.execute(() -> {
             // 1. 序列化行为数据
-            String json = new Gson().toJson(newsBehavior);
+            String json = new Gson().toJson(newsTracker);
 
             // 2. 线程安全入队
             synchronized (LOCK) {

@@ -93,8 +93,7 @@
     </select>
 
     <select id="selectByQuery" parameterType="com.neu.alliance.dto.NewsQueryDTO" resultMap="newsInfoResultMap">
-        SELECT * FROM news_info
-        WHERE deleted = 0
+        SELECT * FROM news_info WHERE deleted = 0
         <if test="startTime != null">
             AND create_time &gt;= #{startTime}
         </if>
@@ -124,8 +123,7 @@
     </select>
 
     <select id="countByQuery" parameterType="com.neu.alliance.dto.NewsQueryDTO" resultType="int">
-        SELECT COUNT(*) FROM news_info
-        WHERE deleted = 0
+        SELECT COUNT(*) FROM news_info WHERE deleted = 0
         <if test="startTime != null">
             AND create_time &gt;= #{startTime}
         </if>
