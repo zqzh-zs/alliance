@@ -19,7 +19,7 @@
         <result property="status" column="status"/>
     </resultMap>
     <!-- 查询用户 by 用户名 -->
-    <select id="selectByUsername" parameterType="string" resultType="com.neu.alliance.entity.User">
+    <select id="selectByUsername" parameterType="string" resultMap="userResultMap">
         SELECT * FROM users WHERE username = #{username}
     </select>
 
@@ -65,7 +65,7 @@
     </update>
 
     <!-- 根据ID查找 -->
-    <select id="selectById" parameterType="integer" resultType="com.neu.alliance.entity.User">
+    <select id="selectById" parameterType="integer" resultMap="userResultMap">
         SELECT * FROM users WHERE id = #{id}
     </select>
 

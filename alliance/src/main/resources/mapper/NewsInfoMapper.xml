@@ -20,6 +20,8 @@
         <result property="createUserId" column="create_user_id"/>
         <result property="isTop" column="is_top"/>
         <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="shareCount" column="share_count"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.neu.alliance.entity.NewsInfo" useGeneratedKeys="true" keyProperty="id">
@@ -31,27 +33,27 @@
              NOW(), NOW(), #{deleted}, #{createUserId}, #{isTop}, #{viewCount})
     </insert>
 
-<!--    <update id="update" parameterType="com.neu.alliance.entity.NewsInfo">-->
-<!--        UPDATE news_info-->
-<!--        SET-->
-<!--            title = #{title},-->
-<!--            news_image = #{newsImage},-->
-<!--            content = #{content},-->
-<!--            summary = #{summary},-->
-<!--            author = #{author},-->
-<!--            status = #{status},-->
-<!--            reject_reason = #{rejectReason},-->
-<!--            update_time = NOW(),-->
-<!--            deleted = #{deleted},-->
-<!--            is_top = #{isTop},-->
-<!--            view_count = #{viewCount}-->
-<!--        WHERE id = #{id}-->
-<!--    </update>-->
+    <!--    <update id="update" parameterType="com.neu.alliance.entity.NewsInfo">-->
+    <!--        UPDATE news_info-->
+    <!--        SET-->
+    <!--            title = #{title},-->
+    <!--            news_image = #{newsImage},-->
+    <!--            content = #{content},-->
+    <!--            summary = #{summary},-->
+    <!--            author = #{author},-->
+    <!--            status = #{status},-->
+    <!--            reject_reason = #{rejectReason},-->
+    <!--            update_time = NOW(),-->
+    <!--            deleted = #{deleted},-->
+    <!--            is_top = #{isTop},-->
+    <!--            view_count = #{viewCount}-->
+    <!--        WHERE id = #{id}-->
+    <!--    </update>-->
 
     <update id="update" parameterType="com.neu.alliance.entity.NewsInfo">
         UPDATE news_info
 
-            <set>
+        <set>
             <if test="title != null">title = #{title},</if>
             <if test="newsImage != null">news_image = #{newsImage},</if>
             <if test="content != null">content = #{content},</if>
@@ -93,7 +95,8 @@
     </select>
 
     <select id="selectByQuery" parameterType="com.neu.alliance.dto.NewsQueryDTO" resultMap="newsInfoResultMap">
-        SELECT * FROM news_info WHERE deleted = 0
+        SELECT * FROM news_info
+        WHERE deleted = 0
         <if test="startTime != null">
             AND create_time &gt;= #{startTime}
         </if>
@@ -110,7 +113,7 @@
             AND news_image LIKE CONCAT('%', #{newsImage}, '%')
         </if>
         <if test="author != null and author != ''">
-            AND author LIKE CONCAT('%', #{author}, '%')
+            AND author LIKE ('%' || #{author} || '%')
         </if>
         <if test="status != null">
             AND status = #{status}
@@ -123,7 +126,8 @@
     </select>
 
     <select id="countByQuery" parameterType="com.neu.alliance.dto.NewsQueryDTO" resultType="int">
-        SELECT COUNT(*) FROM news_info WHERE deleted = 0
+        SELECT COUNT(*) FROM news_info
+        WHERE deleted = 0
         <if test="startTime != null">
             AND create_time &gt;= #{startTime}
         </if>
@@ -140,7 +144,7 @@
             AND news_image LIKE CONCAT('%', #{newsImage}, '%')
         </if>
         <if test="author != null and author != ''">
-            AND author LIKE CONCAT('%', #{author}, '%')
+            AND author LIKE ('%' || #{author} || '%')
         </if>
         <if test="status != null">
             AND status = #{status}
@@ -159,6 +163,15 @@
     <update id="updateViewCount" parameterType="map">
         UPDATE news_info
         SET view_count = #{viewCount}
+        WHERE id = #{id}
+    </update>
+
+    <update id="incrementBehaviorCounts">
+        UPDATE news_info
+        SET view_count = view_count + #{viewCount},
+            like_count = like_count + #{likeCount},
+            share_count = share_count + #{shareCount},
+            update_time = CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>
 

@@ -13,8 +13,10 @@
         作者：{{ info.author }} ｜
         创建时间：{{ formatDate(info.createTime) }} ｜
         更新时间：{{ formatDate(info.updateTime) }} ｜
-        是否置顶：{{ info.isTop === 1 ? '是' : '否' }} ｜
-        浏览次数：{{ info.viewCount }}
+        是否置顶：{{ info.isTop === 1 ? '是' : '否' }} <br>
+        浏览次数：{{ info.viewCount }} ｜
+        点赞数：{{ info.likeCount ?? 0 }} ｜
+        分享数：{{ info.shareCount ?? 0 }}
       </p>
 
       <div class="news-detail-wrapper">
@@ -81,7 +83,12 @@ const statusTag = (status) => {
 }
 
 onMounted(() => {
-  request.get(`/news/${id}`).then(res => {
+  console.log("onMounted 被触发");
+  request.get(`/news/${id}`, {
+    headers: {
+      'Client-Type': 'web'
+    }
+  }).then(res => {
     if (!res?.data) {
       ElMessage.error("数据加载失败")
       return

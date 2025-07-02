@@ -19,4 +19,9 @@ public interface NewsInfoMapper {
     int auditNews(Map<String, Object> params);
     int updateViewCount(@Param("id") Long id, @Param("viewCount") Integer viewCount);
     void updateWithoutTime(NewsInfo newsInfo);
+
+    int incrementBehaviorCounts(@Param("id") Long id,
+                                @Param("viewCount") Integer viewCount,
+                                @Param("likeCount") Integer likeCount,
+                                @Param("shareCount") Integer shareCount);
 }

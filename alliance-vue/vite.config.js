@@ -57,7 +57,13 @@ export default defineConfig({
       },
       '/news': {
         target: 'http://localhost:8080',
-        changeOrigin: true
+        changeOrigin: true,
+        bypass: (req) => {
+          // 遇到 Vue 的前端路由请求，不走代理，交给 Vite 静态处理
+          if (req.headers.accept?.includes('text/html')) {
+            return '/index.html'
+          }
+        }
       },
       '/api': {
         target: 'http://localhost:8080',

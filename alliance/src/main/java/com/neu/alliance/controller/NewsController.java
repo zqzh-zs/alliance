@@ -1,10 +1,12 @@
 package com.neu.alliance.controller;
 
 import com.neu.alliance.dto.NewsQueryDTO;
+import com.neu.alliance.dto.NewsTracker;
 import com.neu.alliance.entity.NewsAttachment;
 import com.neu.alliance.entity.NewsInfo;
 import com.neu.alliance.entity.User;
 import com.neu.alliance.service.NewsInfoService;
+import com.neu.alliance.service.TrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,12 +17,17 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.*;
 
+import static net.sf.jsqlparser.util.validation.metadata.NamedObject.user;
+
 @RestController
 @RequestMapping("/news")
 public class NewsController {
 
     @Autowired
     private NewsInfoService newsInfoService;
+
+    @Autowired
+    private TrackingService trackingService;
 
     @PostMapping
     public Map<String, Object> create(@RequestBody NewsInfo newsInfo, @RequestAttribute("user") User user) {
@@ -63,16 +70,23 @@ public class NewsController {
         return "删除成功";
     }
 
-    @GetMapping("/{id}")
-    public NewsInfo getDetail(@PathVariable Long id) {
-        newsInfoService.incrementViewCount(id); // 单独更新 viewCount，不动其他字段
+    @GetMapping("/{id:\\d+}")
+    public NewsInfo getDetail(@PathVariable Long id,
+                              @RequestHeader(value = "Client-Type", required = false) String clientType) {
+        System.out.println("getDetail called with id = " + id + ", client = " + clientType);
+        if (!"mobile".equalsIgnoreCase(clientType)) {
+            System.out.println("增加浏览量：" + id);
+            newsInfoService.incrementViewCount(id);
+        }
         return newsInfoService.getById(id);
     }
 
     @GetMapping("/list")
-    public Map<String, Object> list(NewsQueryDTO query, @RequestAttribute("user") @RequestBody(required = false) User user) {
+    //安卓：
+    //public Map<String, Object> list(NewsQueryDTO query, @RequestAttribute("user") @RequestBody(required = false) User user) {
+    public Map<String, Object> list(NewsQueryDTO query, @RequestAttribute("user") User user) {
         if (Boolean.TRUE.equals(query.getOnlyMine())) {
-            query.setCreateUserId(user.getId());
+            query.setAuthor(user.getUsername()  );
         }
 
         // 设置 endTime 为当天 23:59:59.999
@@ -96,22 +110,9 @@ public class NewsController {
         return res;
     }
 
-    @GetMapping("/getNews")
-    public Map<String, Object> getNews(@RequestParam int page, @RequestParam int pageSize) {
-        NewsQueryDTO query = new NewsQueryDTO();
-        query.setPageNum(page);
-        query.setPageSize(pageSize);
-        List<NewsInfo> list = newsInfoService.listByQuery(query);
-        int total = newsInfoService.countByQuery(query);
-
-        Map<String, Object> res = new HashMap<>();
-        res.put("total", total);
-        res.put("list", list);
-        return res;
-    }
-
     @PostMapping("/audit")
     public String audit(@RequestBody Map<String, Object> body) {
+        System.out.println("AUDIT 被 POST 调用了: " + body);
         Long id = Long.valueOf(body.get("id").toString());
         Integer status = Integer.valueOf(body.get("status").toString());
         String reason = (String) body.get("reason");
@@ -183,5 +184,36 @@ public class NewsController {
         news.setIsTop(isTop);
         newsInfoService.updateWithoutTime(news, user);   // 用 update 方法即可
         return "设置成功";
+    }
+
+    // 安卓调用：上传用户行为数据
+    @PostMapping("/track")
+    public void trackBehaviors(@RequestBody List<NewsTracker> trackers) {
+        trackingService.processTrackers(trackers);
+    }
+
+    // Web 前端：获取所有新闻行为数据
+    @GetMapping("/track")
+    public List<NewsInfo> getAllTrackers() {
+        return trackingService.getAllBehaviors();
+    }
+
+    @GetMapping("/getNews")
+    public Map<String, Object> getNews(@RequestParam int page, @RequestParam int pageSize) {
+        NewsQueryDTO query = new NewsQueryDTO();
+        query.setPageNum(page);
+        query.setPageSize(pageSize);
+        List<NewsInfo> list = newsInfoService.listByQuery(query);
+        int total = newsInfoService.countByQuery(query);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("total", total);
+        res.put("list", list);
+        return res;
+    }
+
+    @GetMapping
+    public String newsRoot() {
+        return "news root page";
     }
 }

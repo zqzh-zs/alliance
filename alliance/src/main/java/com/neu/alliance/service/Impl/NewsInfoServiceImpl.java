@@ -67,6 +67,15 @@ public class NewsInfoServiceImpl implements NewsInfoService {
     @Override
     public void update(NewsInfo newsInfo, User user) {
         NewsInfo db = newsInfoMapper.selectById(newsInfo.getId());
+
+        // 显式检查已删除状态
+        if (db == null) {
+            throw new RuntimeException("动态不存在");
+        }
+        if (db.getDeleted() == 1) {
+            throw new RuntimeException("动态已删除");
+        }
+
         if (user.getRole() != 1 && !user.getId().equals(db.getCreateUserId())) {
             throw new RuntimeException("无权限编辑该动态");
         }
@@ -86,7 +95,7 @@ public class NewsInfoServiceImpl implements NewsInfoService {
         newsInfoMapper.updateWithoutTime(news);
     }
 
-    private void updateAttachments(NewsInfo newsInfo) {
+    void updateAttachments(NewsInfo newsInfo) {
         if (newsInfo.getAttachments() != null) {
             deleteAttachments(newsInfo.getId());
             if (!newsInfo.getAttachments().isEmpty()) {
@@ -114,12 +123,6 @@ public class NewsInfoServiceImpl implements NewsInfoService {
         NewsInfo info = newsInfoMapper.selectById(id);
         System.out.println("getById called, info = " + info);
         if (info != null) {
-            // 调用只更新view_count的方法，且不更新时间
-            incrementViewCount(id);
-
-            // 更新内存对象的浏览量，使返回的数据与数据库一致
-            info.setViewCount(info.getViewCount() + 1);
-
             // 加载附件
             List<NewsAttachment> attachments = newsAttachmentMapper.selectByNewsId(id);
             info.setAttachments(attachments);
@@ -129,7 +132,7 @@ public class NewsInfoServiceImpl implements NewsInfoService {
 
     @Override
     public List<NewsInfo> listByQuery(NewsQueryDTO query) {
-        // 计算 offset
+        // 只有两个参数都不为null时才计算offset
         if (query.getPageNum() != null && query.getPageSize() != null) {
             query.setOffset((query.getPageNum() - 1) * query.getPageSize());
         }

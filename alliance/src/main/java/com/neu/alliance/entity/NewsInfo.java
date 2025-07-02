@@ -20,5 +20,7 @@ public class NewsInfo {
     private Integer createUserId;
     private Integer isTop;
     private Integer viewCount;
+    private Integer likeCount;
+    private Integer shareCount;
     private List<NewsAttachment> attachments;
 }
