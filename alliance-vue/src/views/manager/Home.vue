@@ -24,6 +24,12 @@
 
         <p>通过“测盟汇”平台，会员单位可轻松完成会议注册、信息发布、会议资料共享等操作，大幅提高会议组织效率，增强参与感与满意度。</p>
       </div>
+      <iframe
+          src="http://localhost/chatbot/jXnOu8g8B6Ru3bEl"
+          style="width: 100%; height: 50%; min-height: 450px"
+          frameborder="0"
+          allow="microphone">
+      </iframe>
     </el-card>
   </div>
 </template>
