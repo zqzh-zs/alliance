@@ -220,5 +220,12 @@ public interface MeetingMapper {
     """)
     int updateMeeting(Meeting meeting);
 
+    @Select({"SELECT * from meetings where status = 'approved'"})
+    List<Meeting> selectAllApproved();
 
+    @Insert("""
+    INSERT INTO attendance_form (`name`, `organization`, `phone`, `email`, `trip`, `time`)
+    VALUES (#{name}, #{organization}, #{phone},#{email},#{trip},#{time})
+""")
+    int insertAttendanceForm(AttendanceForm attendanceForm);
 }

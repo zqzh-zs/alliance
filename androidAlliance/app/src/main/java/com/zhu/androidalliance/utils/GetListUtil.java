@@ -27,7 +27,7 @@ public class GetListUtil {
 
     public static void getMeetingsByType(int page, int size, MeetingType type, DataCallback callback) {
         String apiUrl = MEETINGS_API +
-                "/search?page=" + page +
+                "/mobile/search?page=" + page +
                 "&pageSize=" + size +
                 "&type=" + type.name();
         sendRequestForMeeting(apiUrl, callback);
@@ -74,8 +74,8 @@ public class GetListUtil {
     }
 
 
-    public static void getAllMeetingsByType(MeetingType type, DataCallback callback) {
-        String url =  MEETINGS_API+"/searchAll?type="+type.name();
+    public static void getAllMeetings( DataCallback callback) {
+        String url =  MEETINGS_API+"/searchAll";
         sendRequestForMeeting(url, callback);
     }
 

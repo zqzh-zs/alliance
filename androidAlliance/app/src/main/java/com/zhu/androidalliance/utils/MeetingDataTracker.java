@@ -35,7 +35,7 @@ import okhttp3.Response;
 
 public class MeetingDataTracker {
     // 配置常量
-    private static final String BEHAVIOR_API_URL = Commons.BASE_HOST+"/meeting/track";
+    private static final String BEHAVIOR_API_URL = Commons.BASE_HOST+"/meeting/mobile/track";
     private static final int MAX_RETRIES = 3;
     private static final long RETRY_DELAY_MS = 5000;
     private static final String QUEUE_NAME = "meeting_behavior_queue";

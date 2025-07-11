@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import java.util.regex.Pattern;
 
 
+
 public class AttendanceFormActivity extends AppCompatActivity {
 
     private TextInputEditText name, org, phone, email, train, time;
@@ -70,7 +71,7 @@ public class AttendanceFormActivity extends AppCompatActivity {
         submit = findViewById(R.id.buttonSubmit);
     }
 
-    private boolean validateForm() {
+    boolean validateForm() {
         // 获取输入内容
         String nameText = name.getText().toString().trim();
         String orgText = org.getText().toString().trim();
@@ -128,7 +129,7 @@ public class AttendanceFormActivity extends AppCompatActivity {
         return true;
     }
 
-    private void submitForm() {
+    void submitForm() {
         // 获取输入内容
         String nameText = name.getText().toString().trim();
         String orgText = org.getText().toString().trim();
@@ -154,7 +155,7 @@ public class AttendanceFormActivity extends AppCompatActivity {
         String jsonData = jsonObject.toString();
 
         // 后端API地址
-        String apiUrl = Commons.BASE_HOST+ "/api/submitAttendance";
+        String apiUrl = Commons.BASE_HOST+ "/meeting/mobile/submitAttendance";
 
         // 使用新的 JSON 发送方法
         OkHttpUtil.doPostJson(apiUrl, new JsonCallback() {

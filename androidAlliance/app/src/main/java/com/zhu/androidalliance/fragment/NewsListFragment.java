@@ -38,6 +38,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import lombok.Data;
+
+
 public class NewsListFragment extends Fragment {
     private final ExecutorService searchExecutor = Executors.newSingleThreadExecutor();
     // UI 组件
@@ -53,16 +56,15 @@ public class NewsListFragment extends Fragment {
     private int pageSize = 10;
     private boolean hasMore = true;
     private boolean isLoading = false;
-    private String currentKeyword = "";
+    String currentKeyword = "";
 
     // 数据存储
-    private List<NewsInfo> allNewsList = new ArrayList<>(); // 存储所有已加载的数据
-    private List<NewsInfo> filteredList = new ArrayList<>(); // 存储过滤后的数据
+    List<NewsInfo> allNewsList = new ArrayList<>(); // 存储所有已加载的数据
+    List<NewsInfo> filteredList = new ArrayList<>(); // 存储过滤后的数据
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private static final int SEARCH_DELAY = 500;
 
-    // 新增：本地搜索的Runnable
     private final Runnable searchRunnable = new Runnable() {
         @Override
         public void run() {
@@ -201,7 +203,7 @@ public class NewsListFragment extends Fragment {
     }
 
     // 新增：应用本地搜索
-    private void applyLocalSearch() {
+    public void applyLocalSearch() {
         if (TextUtils.isEmpty(currentKeyword)) {
             // 没有关键词时显示所有数据
             filteredList.clear();
@@ -229,7 +231,7 @@ public class NewsListFragment extends Fragment {
     }
 
     // 新增：搜索后更新UI
-    private void updateUIAfterSearch() {
+    public void updateUIAfterSearch() {
         newsAdapter.notifyDataSetChanged();
 
         // 处理空状态
@@ -305,7 +307,7 @@ public class NewsListFragment extends Fragment {
         });
     }
 
-    private void handleNewsList(List<NewsInfo> newsList, int totalCount) {
+    public void handleNewsList(List<NewsInfo> newsList, int totalCount) {
         // 将新数据添加到完整列表
         allNewsList.addAll(newsList);
 
@@ -328,7 +330,7 @@ public class NewsListFragment extends Fragment {
         isLoading = false;
     }
 
-    private void handleNewsError(String errorMsg) {
+    public void handleNewsError(String errorMsg) {
         showLoading(false);
         progressBottom.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
@@ -344,7 +346,7 @@ public class NewsListFragment extends Fragment {
         isLoading = false;
     }
 
-    private void showLoading(boolean isLoading) {
+    public void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         rvNews.setVisibility(isLoading ? View.GONE : View.VISIBLE);
         if (!isLoading) {
@@ -352,7 +354,7 @@ public class NewsListFragment extends Fragment {
         }
     }
 
-    private void showEmptyState(boolean isEmpty) {
+    public void showEmptyState(boolean isEmpty) {
         tvEmptyState.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
     }
 

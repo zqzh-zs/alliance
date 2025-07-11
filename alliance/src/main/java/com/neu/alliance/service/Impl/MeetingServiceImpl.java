@@ -3,9 +3,7 @@ package com.neu.alliance.service.Impl;
 
 
 import com.neu.alliance.dto.MeetingDTO;
-import com.neu.alliance.entity.Meeting;
-import com.neu.alliance.entity.MeetingListData;
-import com.neu.alliance.entity.MeetingType;
+import com.neu.alliance.entity.*;
 import com.neu.alliance.mapper.MeetingMapper;
 import com.neu.alliance.service.MeetingService;
 import org.springframework.stereotype.Service;
@@ -38,5 +36,16 @@ public class MeetingServiceImpl implements MeetingService {
         data.setTotal(total);
         data.setList(meetingDTOList);
         return data;
+    }
+
+    @Override
+    public boolean submitAttendanceForm(AttendanceForm attendanceForm) {
+        int rows = meetingMapper.insertAttendanceForm(attendanceForm);
+        return rows > 0;
+    }
+
+    @Override
+    public boolean track(List<MeetingTracker> meetingTracker) {
+        return true;
     }
 }

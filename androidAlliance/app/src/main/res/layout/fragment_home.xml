@@ -1,187 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#F8FAFF">
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       android:background="#F8FAFF"
+                                       android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <!-- 欢迎横幅 -->
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp"
-            android:background="@drawable/bg_welcome_banner"
-            android:gravity="center_vertical">
+            android:padding="16dp">
 
-            <TextView
+        <!-- 欢迎横幅 -->
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="欢迎回来！"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                android:textStyle="bold"/>
+                android:background="@drawable/bg_welcome_banner"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="24dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="探索行业会议与最新动态"
-                android:textColor="#B3FFFFFF"
-                android:textSize="16sp"
-                android:layout_marginTop="4dp"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="欢迎回来！"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="探索行业会议与最新动态"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="16sp" />
         </LinearLayout>
 
         <!-- 快速入口 -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:divider="@drawable/divider_vertical"
-            android:showDividers="middle"
-            android:dividerPadding="8dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:divider="@drawable/divider_vertical"
+                android:dividerPadding="8dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:showDividers="middle">
 
             <!-- 会议注册入口 -->
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:onClick="navigateToMeetings">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:onClick="navigateToMeetings"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                 <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_conference_primary"
-                    android:contentDescription="会议注册"/>
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:contentDescription="会议注册"
+                        android:src="@drawable/ic_conference_primary" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="会议注册"
-                    android:textColor="#1A237E"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="会议注册"
+                        android:textColor="#1A237E"
+                        android:textSize="14sp" />
             </LinearLayout>
 
             <!-- 行业动态入口 -->
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:onClick="navigateToNews">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:onClick="navigateToNews"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                 <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_news_primary"
-                    android:contentDescription="行业动态"/>
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:contentDescription="行业动态"
+                        android:src="@drawable/ic_news_primary" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="行业动态"
-                    android:textColor="#1A237E"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="行业动态"
+                        android:textColor="#1A237E"
+                        android:textSize="14sp" />
             </LinearLayout>
 
             <!-- 公益行动入口 -->
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:onClick="navigateToPublicWelfare">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:onClick="navigateToPublicWelfare"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                 <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_public_welfare"
-                    android:contentDescription="公益行动"/>
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:contentDescription="公益行动"
+                        android:src="@drawable/ic_public_welfare" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="公益行动"
-                    android:textColor="#1A237E"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="公益行动"
+                        android:textColor="#1A237E"
+                        android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- 推荐会议 -->
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="推荐会议"
-            android:textColor="#212121"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="16dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="推荐会议"
+                android:textColor="#212121"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         <!--推荐会议-->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFeaturedMeetings"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingHorizontal="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:id="@+id/rvFeaturedMeetings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="2dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="最新动态"
-                android:textColor="#212121"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="最新动态"
+                    android:textColor="#212121"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvSeeAllNews"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="查看全部"
-                android:textColor="#1A237E"
-                android:textSize="14sp"
-                android:onClick="navigateToNews"/>
+                    android:id="@+id/tvSeeAllNews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="navigateToNews"
+                    android:text="查看全部"
+                    android:textColor="#1A237E"
+                    android:textSize="14sp" />
         </LinearLayout>
         <!-- 最新动态 -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvLatestNews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:id="@+id/rvLatestNews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

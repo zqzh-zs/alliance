@@ -9,9 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.zhu.androidalliance.R;
 import com.zhu.androidalliance.pojo.dataObject.Meeting;
 import com.zhu.androidalliance.utils.DateFormatUtil;
@@ -94,8 +91,12 @@ public class MeetingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         public void bind(Meeting meeting, OnMeetingClickListener listener) {
+            // 替换原加载图片的代码
+            String imageUrl = meeting.getImageUrl();
 
-            ImageLoader.loadImage(itemView.getContext(),meeting.getImageUrl(),ivMeetingImage,R.drawable.ic_placeholder);
+            ImageLoader.loadImage(itemView.getContext(), imageUrl, ivMeetingImage);
+
+
 
             tvMeetingTitle.setText(meeting.getTitle());
             tvMeetingType.setText(meeting.getType().getDisplayName());

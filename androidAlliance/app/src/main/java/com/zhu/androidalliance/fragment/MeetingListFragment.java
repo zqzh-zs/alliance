@@ -138,6 +138,7 @@ public class MeetingListFragment extends Fragment {
     }
 
     void loadMeetings(boolean clearData) {
+        if(isLoading) return;
         if (clearData) {
             meetingAdapter.clearData();
         }
@@ -186,6 +187,7 @@ public class MeetingListFragment extends Fragment {
     }
 
     void loadNextPage() {
+        if(isLoading || !hasMore) return;
         if (!isLoading && hasMore) {
             currentPage++;
             pbLoadMore.setVisibility(View.VISIBLE);
@@ -194,7 +196,7 @@ public class MeetingListFragment extends Fragment {
     }
 
 
-    private void showLoading(boolean isLoading, boolean isLoadMore) {
+    void showLoading(boolean isLoading, boolean isLoadMore) {
         if (isLoading) {
             progressBar.setVisibility(View.VISIBLE);
             rvMeetings.setVisibility(View.GONE);
@@ -206,7 +208,7 @@ public class MeetingListFragment extends Fragment {
         }
     }
 
-    private void openMeetingDetail(Meeting meeting) {
+    void openMeetingDetail(Meeting meeting) {
         Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
         intent.putExtra("meeting", meeting);
         startActivity(intent);

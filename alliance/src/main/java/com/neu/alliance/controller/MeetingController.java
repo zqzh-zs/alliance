@@ -214,7 +214,7 @@ public class MeetingController {
         }
     }
 
-    private static class Result {
+    static class Result {
         private int code;
         private String msg;
         private Object data;
@@ -248,5 +248,45 @@ public class MeetingController {
         public void setData(Object data) {
             this.data = data;
         }
+    }
+
+    public Map<String, Object> searchAll(){
+        List<Meeting> meetings = meetingMapper.selectAllApproved();
+        for (Meeting meeting : meetings){
+            List<Guest> guests = guestMapper.getGuestsByMeetingId(meeting.getId());
+            meeting.setGuests(guests);
+            List<AgendaItem> agendaItems = agendaMapper.getAgendaItemsByMeetingId(meeting.getId());
+            meeting.setAgendaItems(agendaItems);
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("list", meetings);
+        result.put("total", meetings.size());
+        return result;
+    }
+
+    @GetMapping("/mobile/search")
+    public Map<String, Object> mobileSearch(
+            @RequestParam int page,
+            @RequestParam int pageSize,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String organizer,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ) {
+        int offset = (page - 1) * pageSize;
+        List<Meeting> meetings = meetingMapper.searchMeetings(type, keyword, organizer, startDate, endDate, offset, pageSize);
+        for (Meeting meeting : meetings){
+            List<Guest> guests = guestMapper.getGuestsByMeetingId(meeting.getId());
+            meeting.setGuests(guests);
+            List<AgendaItem> agendaItems = agendaMapper.getAgendaItemsByMeetingId(meeting.getId());
+            meeting.setAgendaItems(agendaItems);
+        }
+        int total = meetingMapper.countMeetings(type, keyword, organizer, startDate, endDate);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("list", meetings);
+        result.put("total", total);
+        return result;
     }
 }

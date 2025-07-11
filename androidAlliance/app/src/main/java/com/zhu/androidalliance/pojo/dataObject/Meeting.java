@@ -25,13 +25,12 @@ public class Meeting implements Serializable {
     private Date endTime;
     private String location;
     private String organizer;
+    @SerializedName("imageUrl")
     private String imageUrl;
     private MeetingType type;
     private List<AgendaItem> agendaItems;
     private List<Guest> guests;
     private MeetingStatus status;
-    private Integer isTop;
-    private Integer viewCount;
     private Date created_time;
 
 }

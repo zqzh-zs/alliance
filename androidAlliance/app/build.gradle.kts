@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("jacoco")
 }
 
 android {
@@ -68,21 +69,49 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.30")
 
     // ===== 测试依赖 =====
-
-    // 单元测试 (test)
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:4.0.0") // 统一Mockito版本
-
-    // Fragment测试支持
+    testImplementation("org.mockito:mockito-core:4.0.0")
     debugImplementation("androidx.fragment:fragment-testing:1.6.1")
-
-    // Android仪器测试 (androidTest)
+    testImplementation ("org.robolectric:robolectric:4.12.1")
     androidTestImplementation("androidx.test:core:1.5.0")
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("org.mockito:mockito-android:4.0.0") // 仅用于androidTest
+    androidTestImplementation("org.mockito:mockito-android:4.0.0")
+}
 
+extensions.configure<JacocoPluginExtension>("jacoco") {
+    toolVersion = "0.8.10"
+}
+//  配置 Jacoco 报告任务（适用于 testDebugUnitTest）
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
 
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "android/**/*.*"
+    )
+
+    val javaClasses = fileTree("${buildDir}/intermediates/javac/debug") {
+        exclude(fileFilter)
+    }
+    val kotlinClasses = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+
+    classDirectories.setFrom(files(javaClasses, kotlinClasses))
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+    executionData.setFrom(fileTree(buildDir) {
+        include("jacoco/testDebugUnitTest.exec")
+    })
+
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+    }
 }

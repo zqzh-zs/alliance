@@ -3,6 +3,7 @@ package com.neu.alliance.entity;
 import java.io.Serializable;
 
 public class AttendanceForm implements Serializable {
+    private String attendanceId;
     private String name;
     private String organization;
     private String phone;

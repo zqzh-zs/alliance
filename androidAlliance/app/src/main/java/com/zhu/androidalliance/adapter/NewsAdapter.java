@@ -1,9 +1,6 @@
 package com.zhu.androidalliance.adapter;
 
-import android.content.Context;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.zhu.androidalliance.R;
 import com.zhu.androidalliance.pojo.dataObject.NewsInfo;
 import com.zhu.androidalliance.utils.DateFormatUtil;
 import com.zhu.androidalliance.utils.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.SimpleFormatter;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<NewsInfo> dataList;
@@ -33,10 +25,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.dataList = dataList;
     }
     // 新增：清空数据方法
-    public void clearData() {
-        dataList.clear();
-        notifyDataSetChanged();
-    }
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.itemClickListener = listener;
     }
@@ -74,7 +62,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             // 使用Glide加载图片
             if (!TextUtils.isEmpty(newsInfo.getNewsImage())) {
-                ImageLoader.loadImage(viewHolder.itemView.getContext(),newsInfo.getNewsImage(),viewHolder.image,R.drawable.ic_placeholder);
+                ImageLoader.loadImage(viewHolder.itemView.getContext(),newsInfo.getNewsImage(),viewHolder.image);
 
             } else {
                 viewHolder.image.setImageResource(R.drawable.ic_placeholder);

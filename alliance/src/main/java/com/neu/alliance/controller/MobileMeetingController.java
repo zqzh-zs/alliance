@@ -1,13 +1,10 @@
 package com.neu.alliance.controller;
 
-import com.neu.alliance.entity.MeetingListData;
-import com.neu.alliance.entity.MeetingType;
-import com.neu.alliance.entity.Response;
+import com.neu.alliance.entity.*;
 import com.neu.alliance.service.MeetingService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/mobile/meeting")
@@ -26,5 +23,24 @@ public class MobileMeetingController {
     ) {
         MeetingListData data = meetingService.getApprovedMeetingsByType(type, page, pageSize);
         return Response.success(data);
+    }
+
+    @PostMapping("/submitAttendance")
+    public String submitAttendance(@RequestBody AttendanceForm attendanceForm){
+        if(meetingService.submitAttendanceForm(attendanceForm)){
+            return "提交成功";
+        }else{
+            return "提交失败";
+        }
+    }
+
+
+    @PostMapping("/track")
+    public String track(@RequestBody List<MeetingTracker> meetingTracker){
+        if(meetingService.track(meetingTracker)){
+            return "提交成功";
+        }else{
+            return "提交失败";
+        }
     }
 }

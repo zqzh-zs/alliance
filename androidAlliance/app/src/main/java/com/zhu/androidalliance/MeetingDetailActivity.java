@@ -13,12 +13,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.zhu.androidalliance.adapter.AgendaAdapter;
 import com.zhu.androidalliance.adapter.GuestAdapter;
 import com.zhu.androidalliance.enums.MeetingType;
 import com.zhu.androidalliance.pojo.dataObject.Meeting;
+import com.zhu.androidalliance.utils.ImageLoader;
 import com.zhu.androidalliance.utils.MeetingDataTracker;
 
 import java.text.SimpleDateFormat;
@@ -63,7 +63,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        ivMeetingImage = findViewById(R.id.ivMeetingImage);
+        ivMeetingImage = findViewById(R.id.MeetingImage);
         tvMeetingTitle = findViewById(R.id.tvMeetingTitle);
         tvMeetingType = findViewById(R.id.tvMeetingType);
         tvMeetingDate = findViewById(R.id.tvMeetingDate);
@@ -87,13 +87,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
     private void bindData() {
         // 加载会议图片
-        if (meeting.getImageUrl() != null && !meeting.getImageUrl().isEmpty()) {
-            Glide.with(this)
-                    .load(meeting.getImageUrl())
-                    .placeholder(R.drawable.ic_placeholder)
-                    .error(R.drawable.ic_error)
-                    .into(ivMeetingImage);
-        }
+        ImageLoader.loadImage(this,meeting.getImageUrl(),ivMeetingImage);
 
         tvMeetingTitle.setText(meeting.getTitle());
         tvMeetingType.setText(meeting.getType().getDisplayName());
