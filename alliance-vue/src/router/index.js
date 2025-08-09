@@ -49,4 +49,25 @@ const router = createRouter({
   ]
 })
 
+// // router/index.js
+// import router from './index'
+// import { ElMessage } from 'element-plus'
+//
+// router.beforeEach((to, from, next) => {
+//   // 公共路径，不需要登录
+//   const publicPages = ['/login', '/register']
+//   const authRequired = !publicPages.includes(to.path)
+//
+//   // 获取登录信息
+//   const user = JSON.parse(localStorage.getItem('alliance-user'))
+//   const isAuthenticated = user && user.token
+//
+//   if (authRequired && !isAuthenticated) {
+//     ElMessage.warning("请先登录")
+//     return next('/login')
+//   }
+//
+//   next()
+// })
+
 export default router
